@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=HoEBYovWP9ENCtza9Gv7Zagr67VTGNMf"></script>
+    <script src="jquery/dist/jquery.min.js"></script>
+    <title></title>
+</head>
+<body>
+<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+
+    function post(url, params) {
+        return $.ajax({
+            type: "POST",
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(params)
+        })
+    }
+    function get(url, params) {
+        return $.ajax({
+            type: 'get',
+            url: url
+        })
+
+    }
+
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    map.centerAndZoom('绵阳', 15);
+    $.get('/location/getdzblct/700').then(function (data) {
+//        addMarker(new BMap.Point(data.center_lct.lng, data.center_lct.lat));
+        map.setCenter(data.center_lct.lng, data.center_lct.lat);
+
+        var pt = new BMap.Point(data.center_lct.lng, data.center_lct.lat);
+        var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), {
+            offset: new BMap.Size(10, 25), // 指定定位位置
+            imageOffset: new BMap.Size(0, 0 - 10 * 25) // 设置图片偏移
+        });
+        var marker2 = new BMap.Marker(pt, {icon: myIcon});  // 创建标注
+        map.addOverlay(marker2);              // 将标注添加到地图中
+
+
+        var opts = {
+            width: 100,     // 信息窗口宽度
+            height: 50,     // 信息窗口高度
+            title: "当前位置", // 信息窗口标题
+            enableMessage: true//设置允许信息窗发送短息
+        }
+        var infoWindow = new BMap.InfoWindow('', opts);  // 创建信息窗口对象
+        //默认当前位置打开信息窗口
+        map.openInfoWindow(infoWindow, pt); //开启信息窗口
+        marker2.addEventListener("click", function () {
+            map.openInfoWindow(infoWindow, pt); //开启信息窗口
+        });
+
+        var opts2 = {
+            width: 250,     // 信息窗口宽度
+            height: 80,     // 信息窗口高度
+            title: "", // 信息窗口标题
+            enableMessage: true//设置允许信息窗发送短息
+        };
+
+
+        $.each(data.nearby, function (i, v) {
+            opts2.title = v.name;
+            var marker = new BMap.Marker(new BMap.Point(v.lng, v.lat));  // 创建标注
+            var content = v.address;
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content, marker);
+        })
+
+        function addClickHandler(content, marker) {
+            marker.addEventListener("click", function (e) {
+                        openInfo(content, e)
+                    }
+            );
+        }
+
+        function openInfo(content, e) {
+            var p = e.target;
+            var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+            var infoWindow = new BMap.InfoWindow('地址：' + content, opts2);  // 创建信息窗口对象
+            map.openInfoWindow(infoWindow, point); //开启信息窗口
+        }
+
+    });
+
+
+    /* function myFun(result) {
+     //        var mk = new BMap.Marker(result.center);
+     //        map.addOverlay(mk);
+     addMarker(new BMap.Point(result.center.lng, result.center.lat));
+     map.setCenter(result.center.lng, result.center.lat);
+
+     //创建小狐狸
+     var pt = new BMap.Point(result.center.lng, result.center.lat);
+     var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300, 157));
+     var marker2 = new BMap.Marker(pt, {icon: myIcon});  // 创建标注
+     map.addOverlay(marker2);              // 将标注添加到地图中
+
+
+     post('/momx/location/getdzblct', {
+     "lat": result.center.lat,
+     "lng": result.center.lng,
+     "radius": 700
+     }).then(function (data) {
+     $.each(data, function (i, v) {
+     var point = new BMap.Point(v.lng, v.lat);
+     addMarker(point);
+     })
+
+     })
+     }
+     var myCity = new BMap.LocalCity();
+     myCity.get(myFun);*/
+
+
+    //     // 添加带有定位的导航控件
+    //     var navigationControl = new BMap.NavigationControl({
+    //         // 靠左上角位置
+    //         anchor: BMAP_ANCHOR_TOP_LEFT,
+    //         // LARGE类型
+    //         type: BMAP_NAVIGATION_CONTROL_LARGE,
+    //         // 启用显示定位
+    //         enableGeolocation: true
+    //       });
+    //     map.addControl(navigationControl);
+    //       // 添加定位控件
+    //       var geolocationControl = new BMap.GeolocationControl();
+    //       map.addControl(geolocationControl);
+
+    // 编写自定义函数,创建标注
+    function addMarker(point) {
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+    }
+
+    map.enableScrollWheelZoom(true);
+</script>

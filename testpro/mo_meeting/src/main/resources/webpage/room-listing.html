@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./app.css">
+    <style>
+        .room-panel{
+            height: 80px;
+            padding-top: 28px;
+        }
+        .del-btn {
+            padding: 1px 5px;
+            float: right;
+            background: #000000;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading font-bold">
+            会议室列表
+        </div>
+        <div class="row wrapper" id="content">
+            <div class="col-sm-3" id="addPanel">
+                <a href="./room-adding.html">
+                    <div class="panel room-panel text-center">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="./xhr.js"></script>
+<script>
+    get('./meetingRoom/getRoom').then(function (data) {
+        var html = "";
+        $.each(data, function (i, v) {
+            $('<div class="col-sm-3">' +
+                    '<div class="del-btn" onclick="del(\'' + v.id + '\')">x</div>' +
+                    '<div class="panel text-center room-panel">' +
+                    '<a href="./meeting-listing.html?roomId=' + v.id + '">' + v.name + '</a><br>' +
+                    '<a href="./room-update.html?roomId='+v.id+'">编辑会议室</a>' +
+                    '</div>' +
+                    '</div>')
+                    .insertBefore('#addPanel')
+        });
+    })
+    function del(id) {
+        if (confirm('确定删除？')) {
+            get('./meetingRoom/deleteRoom/'+id).then(function (data) {
+                alert('已删除')
+            })
+        }
+
+    }
+</script>
+</body>
+</html>

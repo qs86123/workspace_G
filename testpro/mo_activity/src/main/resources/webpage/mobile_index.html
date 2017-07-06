@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<style>
+    .panel-1,.panel-2{
+        height: 50vh;
+    }
+</style>
+<body>
+<div class="row">
+    <div class="col-sm-12  panel-1">
+    </div>
+    <div class="col-sm-12 panel-2">
+    </div>
+</div>
+<script src="./jquery/dist/jquery.min.js"></script>
+<script src="./xhr.js"></script>
+<script>
+    $(function () {
+        $('<a href="./mobile_map.html?code='+getQueryString('code')+'"><h2>查看附近活动</h2></a>').appendTo('.panel-1');
+        $('<a href="./mobile_activity_list.html?code='+getQueryString('code')+'"><h2>查看所有</h2></a>').appendTo('.panel-2');
+    })
+</script>
+</body>
+</html>

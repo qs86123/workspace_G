@@ -1,0 +1,41 @@
+{
+  "code": 200,
+  "listData": [
+    {
+      "key": 0,
+      "sectionName": "首页"
+    },
+    {
+      "key": 1,
+      "sectionName": "XX产品详情"
+    },
+    {
+      "key": 2,
+      "sectionName": "新卡办理"
+    },
+    {
+      "key": 3,
+      "sectionName": "充值"
+    },
+    {
+      "key": 4,
+      "sectionName": "我的油卡"
+    },
+    {
+      "key": 5,
+      "sectionName": "我的订单"
+    },
+    {
+      "key": 6,
+      "sectionName": "我的地址"
+    },
+    {
+      "key": 7,
+      "sectionName": "用户邀请"
+    },
+    {
+      "key": 8,
+      "sectionName": "企业油卡管理"
+    }
+  ]
+}

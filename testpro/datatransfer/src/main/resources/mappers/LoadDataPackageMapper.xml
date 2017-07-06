@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.changhong.data.jxw.db.mapper.LoadDataPackageMapper">
+
+	<resultMap type="com.changhong.data.jxw.db.entity.res.LoadDataPackageRes"
+		id="loadDataPackageMap">
+		<id column="ldp_id" property="id" />
+		<result column="ldp_dsid" property="dsid" />
+		<result column="ldp_name" property="name" />
+		<result column="ldp_add_time" property="addTime" />
+		<result column="ldp_description" property="description" />
+		<collection property="tableList"
+			ofType="com.changhong.data.jxw.db.entity.res.LoadTableRes">
+			<id column="lt_id" property="id" />
+			<result column="lt_ldpid" property="ldpid" />
+			<result column="lt_table_source" property="tableSource" />
+			<result column="lt_table_name" property="tableName" />
+			<result column="lt_target_table" property="targetTable" />
+		</collection>
+	</resultMap>
+
+
+	<select id="selectByUserId" parameterType="java.lang.String"
+		resultMap="loadDataPackageMap">
+		select ldp.id ldp_id,ldp.dsid ldp_dsid,ldp.name
+		ldp_name,ldp.add_time ldp_add_time,ldp.description ldp_description,
+		lt.id lt_id,lt.ldpid lt_ldpid,lt.table_source
+		lt_table_source,lt.target_table lt_target_table,lt.table_name
+		lt_table_name
+		from
+		load_data_package ldp left join load_table lt on
+		lt.ldpid=ldp.id
+		where ldp.dsid in (select id from datasource where
+		uid=#{userId})
+	</select>
+
+
+	<!-- /////////////////////////////未使用，不删，留个纪念，万一要用呢//////////////////////////// -->
+	<resultMap type="com.changhong.data.jxw.db.entity.res.LoadDataPackageRes"
+		id="loadDataPackageMap2">
+		<id column="ldp_id" property="id" />
+		<result column="ldp_dsid" property="dsid" />
+		<result column="ldp_name" property="name" />
+		<result column="ldp_add_time" property="addTime" />
+		<result column="ldp_description" property="description" />
+		<collection property="tableList"
+			ofType="com.changhong.data.jxw.db.entity.res.LoadTableRes">
+			<id column="lt_id" property="id" />
+			<result column="lt_ldpid" property="ldpid" />
+			<result column="lt_table_source" property="tableSource" />
+			<result column="lt_table_name" property="tableName" />
+			<result column="lt_target_table" property="targetTable" />
+			<collection property="tableFieldInfos"
+				ofType="com.changhong.data.jxw.db.entity.TableFieldInfo">
+				<result column="COLUMN_NAME" property="columnName" />
+				<result column="COLUMN_TYPE" property="columnType" />
+				<result column="COLUMN_KEY" property="columnKey" />
+				<result column="COLUMN_DEFAULT" property="columnDefault" />
+				<result column="EXTRA" property="extra" />
+				<result column="COLUMN_COMMENT" property="columnComment" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<!-- 一次性查询所有的 表，及其表结构信息，以后修改起来不方便，暂时不用使用这个方式 -->
+	<select id="selectWithColumnInfoByUserId" resultMap="loadDataPackageMap2">
+		select
+		ldp.id
+		ldp_id,ldp.dsid ldp_dsid,ldp.name ldp_name,ldp.add_time
+		ldp_add_time,ldp.description ldp_description,lt.id lt_id,lt.ldpid
+		lt_ldpid,lt.target_table
+		lt_target_table,lt.table_name
+		lt_table_name,lt.table_source lt_table_source,COLUMN_NAME,
+		COLUMN_TYPE,IS_NULLABLE, COLUMN_KEY
+		,COLUMN_DEFAULT,`EXTRA`,COLUMN_COMMENT from load_data_package ldp left
+		join load_table lt on lt.ldpid=ldp.id
+		left join
+		Information_schema.columns as a on a.TABLE_NAME=lt.target_table
+		where
+		a.TABLE_SCHEMA=#{schemaName} and
+		ldp.dsid in (select id from datasource
+		where
+		uid=#{userId})
+	</select>
+
+
+</mapper>

@@ -1,0 +1,9 @@
+{"code":200,
+  "data":[
+    {"itemName":"<3000","itemCount":25},
+    {"itemName":"[3000,5000)","itemCount":0},
+    {"itemName":"[5000,8000)","itemCount":0},
+    {"itemName":"[8000,10000)","itemCount":0},
+    {"itemName":">=10000","itemCount":0}
+  ]
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./app.css">
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading font-bold">添加会议室</div>
+        <div class="panel-body">
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">会议室地址:</label>
+                    <div class="col-lg-6">
+                        <input type="text" name="address" class="form-control" required placeholder="会议室地址">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">会议室名称:</label>
+                    <div class="col-lg-6">
+                        <input type="text" name="name" class="form-control" required placeholder="会议室名称">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">会议室背景图:</label>
+                    <div class="col-lg-6">
+                        <img id="preview" class="hide" src="" alt="">
+                        <input type="file" id="picFile" accept="image/png,image/jpg,image/jpeg"
+                               onchange="readFile(this)"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="upload()">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="./xhr.js"></script>
+<script>
+    function readFile(obj) {
+        var file = obj.files[0];
+        if (!/image\/\w+/.test(file.type)) {
+            alert("请确保文件为图像类型");
+            return false;
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            $('#preview').attr('src', this.result);
+//            getBuildImg();
+//            upload(this.result,getBuildImg().height,getBuildImg().width);
+        }
+    }
+
+    function upload() {
+        post('./meetingRoom/saveRoom', {
+            image: $('#preview').attr('src'),
+            height: getBuildImg().height,
+            width: getBuildImg().width,
+            address: $('input[name=address]').val(),
+            name: $('input[name=name]').val()
+        }).then(function (data) {
+            data.error==0? alert('会议信息已上传'):alert(data.msg)
+        })
+    }
+
+    //    get('./meetinginfo/getRoom').then(function (data) {
+    //        $('#preview').attr('src', JSON.parse(data).image);
+    //    })
+
+    function getBuildImg() {
+        var real_width,
+                real_height,
+                _im = document.getElementById('preview'),
+                im = document.createElement('img');
+        im.src = _im.src,
+                real_width = im.width,
+                real_height = im.height;
+
+        return {
+            width: real_width,
+            height: real_height
+        };
+//        alert(real_width + '\n' + real_height);
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{"code":200,
+  "data":[
+    {"itemName":"B端购买人数","itemCount":328},
+    {"itemName":"B带C端购买人数","itemCount":144},
+    {"itemName":"C端购买人数","itemCount":14},
+    {"itemName":"未购买人数","itemCount":833}
+  ]
+}

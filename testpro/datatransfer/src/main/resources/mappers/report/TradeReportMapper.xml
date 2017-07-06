@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.changhong.data.jxw.report.dao.TradeReportMapper">
+  <resultMap id="BaseResultMap" type="com.changhong.data.jxw.report.entity.TradeReport">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="cnt" jdbcType="INTEGER" property="cnt" />
+    <result column="increasement" jdbcType="INTEGER" property="increasement" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, date, cnt, increasement
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tradereport
+    where id = #{date,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBetweenDate" resultMap="BaseResultMap">
+    <![CDATA[
+    select
+    date, cnt, increasement
+    from tradereport
+    where date >= #{0} and date <= #{1}
+    ]]>
+  </select>
+</mapper>

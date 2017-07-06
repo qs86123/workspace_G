@@ -1,0 +1,133 @@
+
+http://mzxfweb.my.gov.cn/siteInfo/update.xhtml
+{"data":null,"message":"修改成功","success":true}
+Accept:application/json, text/javascript, */*; q=0.01
+Accept-Encoding:gzip, deflate
+Accept-Language:zh-CN,zh;q=0.8
+Connection:keep-alive
+Content-Length:1036
+Content-Type:application/x-www-form-urlencoded; charset=UTF-8
+Cookie:JSESSIONID=1A76DE054ED9A56F5B0392BAB4B04E50
+Host:mzxfweb.my.gov.cn
+Origin:http://mzxfweb.my.gov.cn
+Referer:http://mzxfweb.my.gov.cn/index.xhtml
+User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+X-Requested-With:XMLHttpRequest
+
+pid:
+relyId:66
+siteName:集团公司财务部党支部
+type:支部
+mapLeader:
+tel:
+address:四川省绵阳市涪城区高新区绵兴东路35号
+longitude:104.6881935932
+latitude:31.4794933618
+mapIntro:
+mapTs:
+userName:DZB11
+passWord:
+ips:
+checkTr:on
+create:on,on,on,on,on
+update:on,on,on,on,on,on
+delete:on,on,on,on,on,on
+view:on,on,on,on,on,on
+review:on,on,on,on,on,on
+permissions:[{"resourceId":"43","permissionIds":"1"},{"resourceId":"10","permissionIds":"1"},{"resourceId":"49","permissionIds":"3,4,5,6"},{"resourceId":"54","permissionIds":"1"},{"resourceId":"32","permissionIds":"1"},{"resourceId":"31","permissionIds":"1"}]
+id:1133
+
+
+loadPage('/siteInfo/editUI.xhtml?id=1099','编辑')
+
+
+
+
+--查询支部所有党员缴费情况
+http://mzxfweb.my.gov.cn/paid/allPaid.xhtml
+Request Method:POST
+
+Accept:application/json, text/javascript, */*; q=0.01
+Accept-Encoding:gzip, deflate
+Accept-Language:zh-CN,zh;q=0.8
+Connection:keep-alive
+Content-Length:74
+Content-Type:application/x-www-form-urlencoded; charset=UTF-8
+Cookie:JSESSIONID=567B473DAC6083070C7EAB3531272DD5
+Host:mzxfweb.my.gov.cn
+Origin:http://mzxfweb.my.gov.cn
+Referer:http://mzxfweb.my.gov.cn/index.xhtml
+User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+X-Requested-With:XMLHttpRequest
+
+pYear:2017
+_search:false
+nd:1498548653672
+rows:10
+page:1
+sidx:ord
+sord:asc
+
+--月份缴费
+http://mzxfweb.my.gov.cn/paid/addMore.xhtml
+Request Method:POST
+
+Accept:application/json, text/javascript, */*; q=0.01
+Accept-Encoding:gzip, deflate
+Accept-Language:zh-CN,zh;q=0.8
+Connection:keep-alive
+Content-Length:47
+Content-Type:application/x-www-form-urlencoded; charset=UTF-8
+Cookie:JSESSIONID=567B473DAC6083070C7EAB3531272DD5
+Host:mzxfweb.my.gov.cn
+Origin:http://mzxfweb.my.gov.cn
+Referer:http://mzxfweb.my.gov.cn/index.xhtml
+User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+X-Requested-With:XMLHttpRequest
+
+userId:112691
+start:2017-01
+end:2017-01
+cash:14
+
+--设置已交状态
+http://mzxfweb.my.gov.cn/paid/addOne.xhtml
+Request Method:POST
+
+Accept:application/json, text/javascript, */*; q=0.01
+Accept-Encoding:gzip, deflate
+Accept-Language:zh-CN,zh;q=0.8
+Connection:keep-alive
+Content-Length:67
+Content-Type:application/x-www-form-urlencoded; charset=UTF-8
+Cookie:JSESSIONID=567B473DAC6083070C7EAB3531272DD5
+Host:mzxfweb.my.gov.cn
+Origin:http://mzxfweb.my.gov.cn
+Referer:http://mzxfweb.my.gov.cn/index.xhtml
+User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+X-Requested-With:XMLHttpRequest
+
+id:0
+userId:112691
+dateStr:2017-02
+cash:52
+state:未交
+
+--查询支部所有党员
+http://mzxfweb.my.gov.cn/user/list2.xhtml
+Request Method:POST
+
+Accept:application/json, text/javascript, */*; q=0.01
+Accept-Encoding:gzip, deflate
+Accept-Language:zh-CN,zh;q=0.8
+Connection:keep-alive
+Content-Length:23
+Content-Type:application/x-www-form-urlencoded; charset=UTF-8
+Cookie:JSESSIONID=567B473DAC6083070C7EAB3531272DD5
+Host:mzxfweb.my.gov.cn
+Origin:http://mzxfweb.my.gov.cn
+Referer:http://mzxfweb.my.gov.cn/index.xhtml
+User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+X-Requested-With:XMLHttpRequest
+
+type:党员

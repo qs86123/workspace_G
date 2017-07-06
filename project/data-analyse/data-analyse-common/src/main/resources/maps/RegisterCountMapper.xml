@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changhong.yywl.data.analyse.common.jdbc.mapper.RegisterCountMapper">
+    <select id="findAllUC" resultType="com.changhong.yywl.data.analyse.common.jdbc.entity.AllUserCountEntity">
+        select user_type userType,max(total_cnt) userCount
+        from rp_activate_cnt
+        where category='daily' and time &lt; date_format(CURRENT_DATE(),'%Y-%m-%d')
+        group by user_type
+        ORDER BY user_type
+    </select>
+
+    <select id="findUserCount" parameterType="java.util.HashMap" resultType="com.changhong.yywl.data.analyse.common.jdbc.entity.UserCountEntity">
+        SELECT time,mac_cnt userCount
+        FROM rp_activate_cnt
+        WHERE category=#{category} AND time>=#{startTime} AND NOT time>#{endTime} AND user_type=#{userType}
+    </select>
+
+    <select id="findTypeList" parameterType="java.util.HashMap" resultType="java.lang.String">
+        SELECT DISTINCT user_type
+        FROM rp_activate_cnt
+        WHERE category=#{category} AND time>=#{startTime} AND NOT time>#{endTime}
+        ORDER BY user_type
+    </select>
+</mapper>

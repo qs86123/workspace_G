@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="./bower_components/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="./app.css">
+    <style>
+        .room, .booking-details {
+            float: left;
+        }
+
+        .seat {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            /*background: url("./defind.png") 100%;*/
+            background-size: 100% 100%;
+            cursor: move;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        img {
+            margin-top: 100px;
+            margin-left: 400px;
+            width: 300px;
+            border: 3px solid #F2F2F2;
+            height: 300px;
+            box-shadow: 4px 4px 4px #DDDDDD;
+        }
+
+        span.info {
+            position: absolute;
+            background: #ccc;
+            color: #fff;
+            width: 62px;
+            text-align: center;
+            top: -30px;
+            font-size: 12px;
+            display: none;
+        }
+
+        span.info:after {
+            content: "";
+            position: relative;
+            top: 25px;
+            right: 32px;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #ccc;
+            border-bottom: 0 solid transparent;
+        }
+
+        .seat-info {
+            background: #ccc;
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .seat-info .close {
+            position: absolute;
+            right: 0;
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body style="background: #eee">
+<div class="wrapper-md">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading font-bold">添加会议信息</div>
+                <div class="panel-body">
+                    <div class="bs-example form-horizontal">
+
+                        <!--<div class="form-group">
+                            <label class="col-lg-2 control-label">会议室</label>
+                            <div class="col-lg-10">
+                                <select class="form-control" name="room-name" id="select" onchange="ChoiceRoom(this)"></select>
+                            </div>
+                        </div>-->
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">会议名称</label>
+                            <div class="col-lg-10">
+                                <input type="text" name="meeting-name" class="form-control" placeholder="会议名称">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">会议内容</label>
+                            <div class="col-lg-10">
+                                <input type="text" name="meeting-content" class="form-control" placeholder="会议名称">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">会议时间</label>
+                            <div class="col-lg-10">
+                                <!--<input type="password" name="meeting-data" class="form-control" placeholder="会议名称">-->
+                                <input size="16" name="start" type="text" value="" readonly class="start_date">至
+                                <input size="16" name="end" type="text" value="" readonly class="end_date">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">座位信息</label>
+                            <div class="col-lg-10">
+                                <button class="btn m-b-xs btn-sm btn-primary btn-addon" onclick="add(addPeopleSeat,2)">
+                                    <i class="glyphicon glyphicon-plus"></i>添加领导
+                                </button>
+                                <button class="btn m-b-xs btn-sm btn-primary btn-addon" onclick="add(addPeopleSeat,1)">
+                                    <i class="glyphicon glyphicon-plus"></i>添加参会人员
+                                </button>
+                                <button class="btn m-b-xs btn-sm btn-primary btn-addon" onclick="add(addPeopleSeat,0)">
+                                    <i class="glyphicon glyphicon-plus"></i>添加空座椅
+                                </button>
+                                <ol class="list-unstyled" id="peopleSeat"></ol>
+                                <!--<input type="password" class="form-control" placeholder="会议名称">-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="panel-footer text-center">
+                    <div class="">
+                        <div class="btn m-b-xs  btn-default" onclick="submit()">提交会议信息</div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default room-panel">
+                <div class="panel-heading font-bold">会议室
+                    <input name="r" type="range" id="range" min="0" max="360" onchange="r(this)" oninput="r(this)"
+                           value="0"/>
+                    <button class="btn m-b-xs btn-sm btn-primary" id="saveMeetingImage">保存会议室图片</button>
+                </div>
+                <div style="position: relative" class="room"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="./html2canvas.js"></script>
+<script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="./bower_components/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<script src="./bower_components/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="./xhr.js"></script>
+<script>
+    var imgMediaId;
+
+    $("#saveMeetingImage").click(function () {
+        html2canvas($(".room"), {
+            onrendered: function (canvas) {
+                var DataURL = canvas.toDataURL("image/png");
+
+                post('./meet/meetingImage', {file: DataURL}).then(function (data) {
+                    alert('图片已上传');
+                    imgMediaId = data.msg;
+                });
+
+                var saveFile = function (data, filename) {
+                    var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                    save_link.href = data;
+                    save_link.download = filename;
+
+                    var event = document.createEvent('MouseEvents');
+                    event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                    save_link.dispatchEvent(event);
+                };
+
+
+//                saveFile(DataURL, "ccc.png");
+
+
+            }
+        });
+    });
+
+    $(".start_date").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'zh-CN',
+        startDate: '2013-01-01 00:00:00'
+    });
+    $('.start_date').bind('change', function () {
+        $(".end_date").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            language: 'zh-CN',
+            startDate: $('.start_date').val()
+        });
+    })
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+    var $id = getQueryString('roomId');
+
+
+    ChoiceRoom();
+    function ChoiceRoom() {
+        get('./meetingRoom/getRoomById/' + $id).then(function (data) {
+            $('.room').css({
+                'width': $('.room-panel').width() + 'px',
+                'height': (data.height) * ($('.room-panel').width() / data.width) + 'px',
+                'background-image': 'url(' + data.image + ')',
+                'background-size': "100% 100%",
+                'background-repeat': 'no-repeat'
+            });
+        });
+//        get('./meetinginfo/getSeatInfoByRoomId/' + $id).then(function (data) {
+//            for(var i in data){
+//                $('<div class="seat" style="left:'+data[i].x+'px; top: '+data[i].y+'px;transform:rotate('+data[i].degree+'deg)"></div>').dragDiv().appendTo('.room');
+//            }
+//        })
+    }
+
+    var i = 0,
+            currentNode = "",
+            indexTag = "";
+    function add(callback, vp) {
+        i++;
+        indexTag = i;
+        $('#range').val('0');
+        switch (vp) {
+            case 0:
+                $('<div class="seat seat-' + i + '" data-toggle="tooltip" data-placement="top"></div>').css({
+                    'background-image': 'url("./defind.png")'
+                }).dragDiv().appendTo('.room');
+                break;
+            case 1:
+                $('<div class="seat seat-' + i + '" data-toggle="tooltip" data-placement="top"></div>').css({
+                    'background-image': 'url("./Chair.png")'
+                }).dragDiv().appendTo('.room');
+                break;
+            case 2:
+                $('<div class="seat seat-' + i + '" data-toggle="tooltip" data-placement="top"></div>').css({
+                    'background-image': 'url("./manager.png")'
+                }).dragDiv().appendTo('.room');
+                break;
+
+
+        }
+
+        if (typeof callback === "function") {
+            callback(i, vp)
+        }
+        // addPeopleSeat();
+    }
+
+
+    function onchangeUser(val) {
+        $('i.info').html(val)
+    }
+    function showInfo(e) {
+        $(e).find('span.info').show();
+    }
+    function hideInfo(e) {
+        $(e).find('span.info').hide();
+    }
+    function r(e) {
+//        currentNode.rotate({animateTo:parseInt($(e).val())});
+        var value = $(e).val();
+        $('li.li-' + indexTag + '').find('.rotate').html(value + '°');
+        currentNode.css({
+            "transform": "rotate(" + value + "deg)",
+            "-webkit-transform": "rotate(" + value + "deg)",
+            "-moz-transform": "rotate(" + value + "deg)"
+        });
+
+
+    }
+
+    function addPeopleSeat(i, vp) {
+        $('<li class="seat-info li-' + i + '">' +
+                '参会人: <sapn><input name="person" onblur="getUserInfo(this)" type="text" placeholder="请填写参会人身份证号码"></sapn>' +
+                '旋转角度: <sapn class="rotate">0</sapn>；' +
+                '横坐标: <sapn class="left">0</sapn>；' +
+                '纵坐标: <sapn class="top">0</sapn>' +
+                '<span class="hide">' + vp + '</span>' +
+                '<i class="close glyphicon glyphicon-remove" onclick="removeSeat(this)"></i>' +
+                '</li> ').appendTo('#peopleSeat');
+
+
+        /* $('input[name=person]').bind('input propertychange', function () {
+
+         var node = $(this).parents('li');
+         var log = node.attr('class').substring(node.attr('class').indexOf('li-') + 3);
+
+         $('.seat-' + log + '>i.info').html($(this).val())
+
+
+         });*/
+
+    }
+
+    function removeSeat(e) {
+        var node = $(e).parents('li');
+        node.remove();
+        var log = node.attr('class').substring(node.attr('class').indexOf('li-') + 3);
+        $('.seat-' + log).remove();
+
+    }
+
+    function getUserInfo(e) {
+        var node = $(e).parents('li');
+        var log = node.attr('class').substring(node.attr('class').indexOf('li-') + 3);
+        post('./user/getNameByCardNum', {
+            cardNum: $(e).val()
+        }).then(function (data) {
+            if (!data.msg) {
+                $('.seat-' + log + '').attr('title',data.name).tooltip();
+            } else {
+                $('.seat-' + log + '').attr('title','未找到').tooltip();
+            }
+        })
+
+    }
+
+
+    function getX(obj) {
+        var parObj = obj;
+        var left = obj.offsetLeft;
+        while (parObj = parObj.offsetParent) {
+            left += parObj.offsetLeft;
+        }
+        return left;
+    }
+
+    function getY(obj) {
+        var parObj = obj;
+        var top = obj.offsetTop;
+        while (parObj = parObj.offsetParent) {
+            top += parObj.offsetTop;
+        }
+        return top;
+    }
+
+    function DisplayCoord(event) {
+        var top, left, oDiv;
+        oDiv = document.getElementsByClassName("room")[0];
+        top = getY(oDiv);
+        left = getX(oDiv);
+        return {
+            left: (event.clientX - left + document.body.scrollLeft) - 2,
+            top: (event.clientY - top + document.body.scrollTop)
+        };
+    }
+    ;
+
+    function submit() {
+        var req = {};
+        req.roomId = $id;
+        req.name = $('input[name=meeting-name]').val();
+        req.content = $('input[name=meeting-content]').val();
+        req.startTime = $('input[name=start]').val();
+        req.endTime = $('input[name=end]').val();
+        req.imgMediaId = imgMediaId || "";
+        req.persons = [];
+        $('.seat-info').each(function (key, val) {
+            var data = {};
+            data.person = $(val).find('input[name=person]').val();
+            data.seatFlag = parseInt($(val).find('.hide').html());
+            data.r = parseInt($(val).find('.rotate').html());
+            data.x = parseInt($(val).find('.left').html()) / $('.room').width();
+            data.y = parseInt($(val).find('.top').html()) / $('.room').width();
+            req.persons.push(data);
+        });
+        post('./meetingPlan/saveMeetingAndSeatInfo', req).then(function (data) {
+            data.error == 0 ? alert('会议计划以提交') : alert(data.msg)
+        })
+    }
+
+    (function ($) {
+
+        $('input[name=p]').bind('input propertychange', function () {
+//            $('#result').html($(this).val().length + ' characters');
+            $('li.li-' + indexTag + '').find('.person').html($(this).val());
+        });
+        $.fn.dragDiv = function (divWrap) {
+            return this.each(function () {
+                var $divMove = $(this);//鼠标可拖拽区域
+                currentNode = $divMove;
+                var $divWrap = divWrap ? $divMove.parents(divWrap) : $divMove;//整个移动区域
+                var mX = 0, mY = 0;//定义鼠标X轴Y轴
+                var dX = 0, dY = 0;//定义div左、上位置
+                var isDown = false;//mousedown标记
+
+                if (document.attachEvent) {
+                    $divMove[0].attachEvent('onselectstart', function () {
+                        return false;
+                    });
+                }
+                $divMove.mousedown(function (event) {
+                    var event = event || window.event;
+                    mX = /*event.clientX*/DisplayCoord(event).left;
+                    mY = /*event.clientY;*/DisplayCoord(event).top;
+                    dX = /*$divWrap.offset().left*/DisplayCoord(event).left;
+                    dY = /*$divWrap.offset().top*/DisplayCoord(event).top;
+                    isDown = true;//鼠标拖拽启动
+                    currentNode = $divMove;
+                    var x = $divWrap.css("left") || '0';
+                    var y = $divWrap.css("top") || '0';
+                    $('input[name=x]').val(x);
+                    $('input[name=y]').val(y);
+
+                    indexTag = $divMove.attr('class').substring($divMove.attr('class').indexOf('-') + 1)
+
+
+                });
+                $('.room').mousemove(function (event) {
+                    if (isDown) {
+                        var event = event || window.event;
+                        var x = /*event.clientX*/DisplayCoord(event).left - 18;//鼠标滑动时的X轴
+                        var y = /*event.clientY*/ DisplayCoord(event).top - 18;//鼠标滑动时的Y轴
+
+                        console.log(x, mX, dX)
+                        $divWrap.css({
+                            "left": x - mX + dX,
+                            "top": y - mY + dY
+                        });//div动态位置赋值
+                        currentNode = $divMove;
+                        var x = $divWrap.css("left") || '0';
+                        var y = $divWrap.css("top") || '0';
+                        $('input[name=x]').val(x);
+                        $('input[name=y]').val(y);
+                        $('li.li-' + indexTag + '').find('.left').html(x);
+                        $('li.li-' + indexTag + '').find('.top').html(y);
+                        $('li.li-' + indexTag + '').find('.rotate').html($('input[name=r]').val() + '°');
+
+                    }
+
+
+                });
+                $('.room').mouseup(function () {
+                    isDown = false;//鼠标拖拽结束
+                    return false;
+                });
+            });
+        };
+    })(jQuery);
+
+
+</script>
+</body>
+</html>

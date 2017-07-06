@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./app.css">
+</head>
+<style>
+    .del-btn {
+        padding: 1px 5px;
+        float: right;
+        background: #000000;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .meet-panel {
+        height: 80px;
+        background: #eee;
+        border-radius: 10px;
+        padding-top: 10px;
+    }
+
+    .panel.layer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+    }
+</style>
+<body>
+<div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading font-bold">
+            会议列表
+        </div>
+        <div class="row wrapper" id="content">
+            <!-- <div class="col-sm-4" id="addPanel">
+                 <a href="./meeting-adding.html">
+                     <div class="panel text-center wrapper-lg text-2x">
+                         <i class="glyphicon glyphicon-plus"></i>
+                     </div>
+                 </a>
+             </div>-->
+        </div>
+    </div>
+</div>
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="./xhr.js"></script>
+<script>
+    get('./meetingPlan/getMeetingPlanByRoomId/' + getQueryString("roomId") + '').then(function (data) {
+        var html = '<div class="col-sm-3"><a href="./meeting-adding.html?roomId=' + getQueryString("roomId") + '"><div class="panel meet-panel text-center"> <i class="glyphicon glyphicon-plus"></i></div> </a></div>';
+
+        $.each(data, function (i, v) {
+            html += '<div class="col-sm-3">' +
+                    '<div class="del-btn" onclick="del(\'' + v.id + '\')">x</div>' +
+                    '<div class="panel meet-panel text-center">' +
+                    '<a href="./meeting-updateing.html?meetingId=' + v.id + '&roomId=' + v.roomId + '">' + v.name + '</a><br>' +
+                    '<a href="./Sign.html?meetingId='+v.id+'">生成会议签到码</a><br>' +
+                    '<a onclick="send_messge(\'' + v.id + '\')">推送此会议信息</a>' +
+                    '</div>' +
+                    '</div>'
+        });
+        $('#content').html(html);
+
+
+    });
+    function send_messge(meetingId) {
+        get('./meet/pushMeetingInfoByMeetingId/'+meetingId).then(function (data) {
+            alert('会议信息以推送至用户');
+        })
+    }
+
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+
+    function del(id) {
+        if (confirm('确定删除？')) {
+            get('./meetingPlan/deletePlanByMeetingId/' + id + '').then(function (data) {
+                alert('以删除')
+            })
+        }
+    }
+</script>
+</body>
+</html>

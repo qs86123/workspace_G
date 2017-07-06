@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./assets/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/lib/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="./assets/css/app.css">
+    <link rel="stylesheet" href="./assets/css/oilCard.css">
+</head>
+<body>
+<div class="content">
+    <!--注册用户数柱状图-->
+    <div class="sub-title">
+        <span class="pull-left">注册用户数</span>
+        <!--<div class="pull-left">
+            <span>B端注册用户数:<span id="bUser">173</span></span>
+            <span class="m-l-xs ">B带C端注册用户数:<span id="b2cUser">73</span></span>
+            <span class="m-l-xs">C端注册用户数:<span id="cUser">133</span></span>
+            <span class="m-l-xs">总(ALL)注册用户数:<span id="allUser">379</span></span>
+        </div>-->
+
+        <div class="pull-right">
+            <span class="fs14 pull-left">请选择查看方式</span>
+            <div class="dropDownBox btnSelect m-l-sm text-center pull-left m-t-xxs" style="height: 34px;width: 35px"
+                 data-select="月,周,天">
+                <span class="selectLength">天</span>
+            </div>
+
+            <div class="m-l-xs" style="display: inline-block">
+                <div id="dp1" class="input-group date w150 p-t-xxs pull-left">
+                    <input id="setYear1" class="form-control text-center" type="text" readonly>
+                <span class="input-group-addon"><span
+                        class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <span class="text-center p-l-r-s fs14 pull-left">至</span>
+                <div id="dp2" class="input-group date w150 p-t-xxs pull-left">
+                    <input id="setYear2" class="form-control text-center" type="text" value="" readonly>
+                <span class="input-group-addon"><span
+                        class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <button id="btnQuery1" type="submit" class="btn btn-danger btn-custom m-t-xxs" style="margin-top: -32px">
+                查询
+            </button>
+        </div>
+    </div>
+    <div class="wapper" id="reg"></div>
+
+    <table class="table" style="border: 1px solid #ddd;">
+        <thead>
+        <tr>
+            <td>用户类型</td>
+            <td>注册数</td>
+        </tr>
+        </thead>
+        <tbody id="regCount">
+        </tbody>
+    </table>
+
+    <!--页面访问次数折线图-->
+    <div class="sub-title">
+        <span class="pull-left">页面访问趋势</span>
+        <div class="pull-right">
+            <select class="fs14 pull-left form-control w150 m-t-xxs m-r-sm" name="sectionName-s"
+                    id="sectionName-s">
+                <!--<option value="all">全部页面</option>
+                <option value="0">首页</option>
+                <option value="1">XX产品详情</option>
+                <option value="2">新卡办理</option>
+                <option value="3">充值</option>
+                <option value="4">我的油卡</option>
+                <option value="5">我的订单</option>
+                <option value="6">我的地址</option>
+                <option value="7">用户邀请</option>
+                <option value="8">企业油卡管理</option>-->
+            </select>
+            <span class="fs14 pull-left">请选择查看方式</span>
+            <div class="dropDownBox btnSelect m-l-sm text-center pull-left m-t-xxs" style="height: 34px;width: 35px"
+                 data-select="月,周,天">
+                <span class="selectLength">天</span>
+            </div>
+            <div class="m-l-xs" style="display: inline-block">
+                <div id="dp3" class="input-group date w150 p-t-xxs pull-left">
+                    <input id="setYear3" class="form-control text-center" type="text" readonly>
+                <span class="input-group-addon"><span
+                        class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <span class="text-center p-l-r-s fs14 pull-left">至</span>
+                <div id="dp4" class="input-group date w150 p-t-xxs pull-left">
+                    <input id="setYear4" class="form-control text-center" type="text" value="" readonly>
+                <span class="input-group-addon"><span
+                        class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <button id="btnQuery2" type="submit" class="btn btn-danger btn-custom m-t-xxs" style="margin-top: -30px">
+                查询
+            </button>
+        </div>
+    </div>
+    <div class="margin-top no-margin">
+        <div class="wapper" id="line"></div>
+    </div>
+
+    <!--<div class="sub-title m-b-lg inline-flex">
+        <span>修改折线图数据</span>
+        <span class="fs14 ml450">2016年7月27日&nbsp积分收入</span>
+        <input id="add" class="form-control m-l-lg w150 m-t-xxs">
+        <span class="fs14 p-l-r-s">积分支出</span>
+        <input id="reduce" class="form-control m-l-lg w150 m-t-xxs">
+        <button id="changeData" type="submit" class="btn btn-danger btn-custom m-t-xxs m-l-lg">修改</button>
+    </div>-->
+
+    <!--活跃用户数柱状图-->
+    <div class="sub-title">
+        <span class="pull-left">活跃用户数</span>
+        <div class="pull-right">
+            <span class="fs14 pull-left">请选择查看方式</span>
+            <div class="dropDownBox btnSelect m-l-sm text-center pull-left m-t-xxs" style="height: 34px;width: 35px"
+                 data-select="月,周,天">
+                <span class="selectLength">天</span>
+            </div>
+            <div class="m-l-xs" style="display: inline-block">
+                <div id="dp5" class="input-group date w150 p-t-xxs pull-left">
+                    <input id="setYear5" class="form-control text-center" type="text" readonly>
+                <span class="input-group-addon"><span
+                        class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <span class="text-center p-l-r-s fs14 pull-left">至</span>
+                <div id="dp6" class="input-group date w150 p-t-xxs pull-left">
+                    <input id="setYear6" class="form-control text-center" type="text" value="" readonly>
+                <span class="input-group-addon"><span
+                        class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <button id="btnQuery3" type="submit" class="btn btn-danger btn-custom m-t-xxs" style="margin-top: -30px">
+                查询
+            </button>
+        </div>
+    </div>
+    <div class="wapper" id="bar"></div>
+
+    <!--全国->省份地图下钻-->
+    <div class="sub-title">
+        <span>用户分布</span>
+    </div>
+    <div class="wapper" id="maps"></div>
+</div>
+
+</body>
+<!-- jQuery -->
+<script src="./assets/lib/jquery/jquery.min.js"></script>
+<!--bootstarp 3.3.5-->
+<script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<!-- datepicker -->
+<script src="./assets/lib/datepicker/bootstrap-datepicker.js"></script>
+<script src="./assets/lib/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+<!--echart-->
+<script src="./assets/lib/echarts/echarts.min.js"></script>
+<script src="./assets/lib/echarts/china.js"></script>
+<script src="./assets/lib/echarts/china-pro.js"></script>
+<!--引入项目js-->
+<script src="./assets/js/dateMath.js"></script>
+<script src="./assets/js/app-charts.js"></script>
+<script src="./assets/js/app-content.js"></script>
+<script src="./assets/js/user.js"></script>
+</html>

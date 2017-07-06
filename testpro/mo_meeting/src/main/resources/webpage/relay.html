@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport"
+          name="viewport">
+    <title>Title</title>
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./app.css">
+    <style>
+        .panel {
+            height: 50vh;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            查看座位信息
+        </div>
+        <div class="panel-body panel-1">
+
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            转发他人代为参会
+        </div>
+        <div class="panel-body">
+            <div class="input-group">
+                <input name="id_card" class="form-control" type="text" placeholder="请填写带参会人身份证号">
+                <span class="input-group-btn">
+        <button class="btn btn-default" type="button" onclick="submit()">确认转发</button>
+      </span>
+            </div>
+            <p class="error_msg" style="color: red"></p>
+
+        </div>
+    </div>
+</div>
+
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="./xhr.js"></script>
+<script>
+
+    $('<a href="./view.html?code=' + getQueryString("code") + '&state=' + getQueryString("state") + '"> 点击查看座位信息</a>').appendTo('.panel-1');
+
+    function submit() {
+        if (sessionStorage.getItem("openid")) {
+            post('./meetingPlan/replace', {
+                userOpenid: sessionStorage.getItem("openid"),
+                meetingId: getQueryString("state"),
+                replaceCardNum: $('input[name=id_card]').val()
+            }).then(function (data) {
+                data.error = 0 ? alert('已成功转发') : $('.error_msg').html(data.msg)
+            })
+        } else {
+            get('./wxget/openid?code=' + getQueryString("code")).then(function (openid) {
+                sessionStorage.setItem("openid", openid);
+                post('./meetingPlan/replace', {
+                    userOpenid: openid,
+                    meetingId: getQueryString("state"),
+                    replaceCardNum: $('input[name=id_card]').val()
+                }).then(function (data) {
+                    data.error = 0 ? alert('已成功转发') : $('.error_msg').html(data.msg)
+                })
+            })
+        }
+    }
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+body {
+  font-family: "Microsoft YaHei UI";
+  font-size: 14px; }
+
+.content {
+  padding: 20px; }
+
+.sub-title {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  color: #333;
+  border-radius: 3px;
+  background-color: #d7d7d7;
+  font-size: 20px;
+  padding-left: 20px; }
+
+.inline {
+  display: inline; }
+
+.p-l-r-s {
+  padding-left: 10px;
+  padding-right: 10px; }
+
+.w150 {
+  width: 150px; }
+
+.p-t-xxs {
+  padding-top: 3px; }
+
+.m-t-xxs {
+  margin-top: 3px; }
+
+.btn-custom {
+  width: 100px;
+  height: 34px;
+  border: none; }
+
+.btn {
+  font-weight: 500;
+  border-radius: 2px;
+  outline: 0; }
+
+.fs14 {
+  font-size: 14px; }
+
+.fs16 {
+  font-size: 16px; }
+
+.wapper {
+  height: 500px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 20px 0; }
+.wapper-small {
+  height: 500px;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+.inline-flex {
+  display: inline-flex; }
+
+/*按钮样式*/
+.dropDownBox{
+  display: inline-block;
+  line-height: normal;
+  /*max-height: 24px;*/
+  /*height: 24px;*/
+  /*width: 69px;*/
+  border: 1px solid #e4e4e4;
+  outline: none;
+  border-radius: 3px;
+  color: #333333;
+  font-size: 15px;
+  /*font-weight: bold;*/
+  padding: 7px 0;
+  /*margin: 2px 2px 2px 2px ;*/
+  cursor: pointer;
+  /*background-color: #f8f9f8;*/
+  background: linear-gradient(top, #ffffff, #ffffff);
+  background: -webkit-linear-gradient(top, #ffffff, #ffffff);
+  background: -moz-linear-gradient(top, #ffffff, #ffffff);
+  background: -ms-linear-gradient(top, #ffffff, #ffffff);
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.dropDownBox:active{
+  background-color: #ffffff;
+  background: linear-gradient(top, #ffffff, #ffffff);
+  background: -webkit-linear-gradient(top, #ffffff, #ffffff);
+  background: -moz-linear-gradient(top, #ffffff, #ffffff);
+  background: -ms-linear-gradient(top, #ffffff, #ffffff);
+}
+
+/*模拟下拉列表*/
+.selectLength {
+  display: inline-block;
+  min-width: 20px;
+}
+.jqSelectBox {
+  position: absolute;
+  max-width: 206px;
+  max-height: 130px;
+  margin-top: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 10px 0;
+  box-shadow: 0 0 10px 4px #bababa;
+  color: #33bef5;
+  display: none;
+  overflow: auto;
+}
+
+.jqSelectBox li {
+  /*width: 120px;*/
+  padding-left: 10px;
+  /*text-align: center;*/
+  line-height: 30px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.jqSelectBox li:hover {
+  background-color: #33bef5;
+  color: #ffffff;
+  /*background-color: #ffffff;*/
+  /*color: #00aae3;*/
+}
+.btn-default.active,
+.btn-default:active:hover,
+.btn-default:focus,
+.btn-default:hover,
+.open .dropdown-toggle.btn-default {
+  color: #58666e!important;
+  background-color: #edf1f2;
+  border-color: #c7d3d6;}
+.btn-group>li.active,
+.btn-group>li.active:hover {
+    color: #fff!important;
+    background-color: #f05050;
+    border-color: #f05050;
+}
+/*# sourceMappingURL=oilCard.css.map */

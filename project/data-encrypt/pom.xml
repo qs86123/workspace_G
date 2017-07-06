@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.changhong.data.yyhl</groupId>
+    <artifactId>data-encrypt</artifactId>
+    <version>1.0.0-20160921</version>
+    <packaging>jar</packaging>
+
+    <name>data-encrypt</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <repositories>
+        <repository>
+            <id>rcsRelases</id>
+            <url>http://10.3.30.41:8089/nexus/content/repositories/rcsReleases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>rcsSnapshots</id>
+            <url>http://10.3.30.41:8089/nexus/content/repositories/rcsSnapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>rcsRelases</id>
+            <name>rcsRelases</name>
+            <url>http://10.3.30.41:8089/nexus/content/repositories/rcsReleases</url>
+        </repository>
+        <snapshotRepository>
+            <id>rcsSnapshots</id>
+            <name>rcsSnapshots</name>
+            <url>http://10.3.30.41:8089/nexus/content/repositories/rcsSnapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

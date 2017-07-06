@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.changhong.data.jxw.db.mapper.DataPackageMapper">
+	<resultMap type="com.changhong.data.jxw.db.entity.res.DataPackageInfoRes"
+		id="dataPackageMap">
+		<id column="dpid" property="id" />
+		<result column="dp_uid" property="uid" />
+		<result column="dp_title" property="title" />
+		<collection property="tableList"
+			ofType="com.changhong.data.jxw.db.entity.res.DataPackageTableRes">
+			<id column="dptid" property="id" />
+			<result column="dpt_dpid" property="dpid" />
+			<result column="dpt_table_source" property="tableSource" />
+			<result column="dpt_table_name" property="tableName" />
+			<result column="dpt_target_table" property="targetTable" />
+			<result column="dpt_sumary_table" property="sumaryTable" />
+			<collection property="dataPackageColumnInfoList"
+				ofType="com.changhong.data.jxw.db.entity.DataPackageColumnInfo">
+				<id column="dpcid" property="id" />
+				<result column="dpc_dptid" property="dptid" />
+				<result column="dpc_column_source" property="columnSource" />
+				<result column="dpc_column_name" property="columnName" />
+				<result column="dpc_column_type" property="columnType" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="selectPackageInfoByPackageId" parameterType="java.lang.String"
+		resultMap="dataPackageMap">
+		select dp.id dpid,dp.uid
+		uid,dp.title dp_title,
+		dpt.id
+		dptid,dpt.dpid
+		dpt_dpid,dpt.table_source
+		dpt_table_source,dpt.table_name
+		dpt_table_name,dpt.target_table
+		dpt_target_table,dpt.sumary_table
+		dpt_sumary_table,
+		dpc.id
+		dpcid,dpc.dptid dpc_dptid,dpc.column_source
+		dpc_column_source,dpc.column_name dpc_column_name,dpc.column_type
+		dpc_column_type
+		from data_package dp left join data_package_table dpt
+		on
+		dp.id=dpt.dpid left join data_package_column dpc on dpt.id=dpc.dptid
+		where is_del='0' and dp.id=#{dataPackegeId}
+	</select>
+
+	<update id="deleteTable">
+		drop table if exists `${tableName}`
+	</update>
+
+</mapper>

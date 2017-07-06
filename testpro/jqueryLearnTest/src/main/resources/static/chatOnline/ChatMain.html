@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<link rel="stylesheet" type="text/css" href="cssMain.css"/>
+<script type="text/javascript" src="../jquery-1.4.2.js"></script>
+<script type="text/javascript" src="jsMain.js"></script>
+<body>
+    <div id="divMain">
+        <div class="divTop">
+            <div class="divL">
+                <h3>my chat Room</h3>
+                <div class="divShow" id="divContent"></div>
+            </div>
+            <div class="divR">
+                <h3>Online Now</h3>
+                <div class="divShow" id="divOnline"></div>
+            </div>
+        </div>
+        <div class="divBot">
+            <table cellspacing="0" cellpadding="0">
+                <tr><td colspan="2" id="divFace" class="pb"></td></tr>
+                <tr><td>
+                    <textarea id="txtContent" cols="64" rows="3" class="txt"></textarea>
+                </td><td class="pl">
+                    <input id="btn1" type="button" value="send" class="btn"/>
+                </td></tr><tr><td colspan="2" class="pt">
+                    content cannot be null!</td></tr>
+            </table>
+        </div>
+        <span id="divMsg" class="clsTip">sending...</span>
+    </div>
+</body>
+</html>

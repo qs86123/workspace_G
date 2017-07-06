@@ -1,0 +1,25 @@
+environments:
+    dev:
+        url: http://dev.bar.com
+        name: Developer Setup
+    prod:
+        url: http://foo.bar.com
+        name: My Cool App
+my:
+  lists:
+       - dev.bar.com
+       - foo.bar.com
+myProps:
+    simpleProp: simplePropValue  
+    arrayProps: 1,2,3,4,5  
+    listProp1: 
+        - map1key: map1value  
+          map1key2: map1value2  
+        - map2key: map2value  
+          map2key2: map2value2  
+    listProp2:  
+        - config2Value1  
+        - config2Vavlue2  
+    mapProps:  
+        key1: value1  
+        key2: value2  

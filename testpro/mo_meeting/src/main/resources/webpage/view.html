@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #eee">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport"
+          name="viewport">
+    <title>test</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .seat {
+        position: absolute;
+        cursor: move;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    }
+
+</style>
+<body>
+<div class="main room">
+    <img src="" style="display: none" id="preview" alt="">
+</div>
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="./xhr.js"></script>
+<script>
+    $(function () {
+
+
+        console.log(sessionStorage.getItem("openid"));
+
+        var scale = "";
+
+        if(sessionStorage.getItem("openid")){
+            get('./meetingRoom/getRoomByMeetingId/' + getQueryString('state')).then(function (data) {
+                $('img').attr('src', data.image);
+                scale = document.body.clientWidth / getBuildImg().width;
+                $('.room').css({
+                    "width": document.body.clientWidth + 'px',
+                    "height": getBuildImg().height * scale + 'px',
+                    'background-image': 'url(' + data.image + ')',
+                    'background-size': "100% auto",
+                    'background-repeat': 'no-repeat'
+                });
+                //获取座位信息
+                get('./meetingPlan/getSeatInfoByMeetingId/' + getQueryString("state") + '').then(function (AllUserSeatData) {
+                    post('./meetingPlan/getUserSeat', {
+                        openid: sessionStorage.getItem("openid"),
+                        meetingId: getQueryString('state')
+                    }).then(function (UserSeatData) {
+                        var roomH = $('.room').height();
+                        var roomW = document.body.clientWidth;
+                        $.each(AllUserSeatData, function (i, v) {
+                            if (v.id == UserSeatData.id) {
+                                $('<div class="seat">').css({
+                                    'left': roomW * v.x,
+                                    'top': roomH * v.y,
+                                    'width': '1.2em',
+                                    'height': '1.2em',
+                                    'background': 'url("./center.png") 100%',
+                                    'background-size': '100% 100%',
+                                    'transform': 'rotate(' + v.degree + 'deg)'
+                                }).appendTo('.room');
+                            } else {
+                                $('<div class="seat">').css({
+                                    'left': roomW * v.x,
+                                    'top': roomH * v.y,
+                                    'width': '1.2em',
+                                    'height': '1.2em',
+                                    'background': 'url("./Chair.png") 100%',
+                                    'background-size': '100% 100%',
+                                    'transform': 'rotate(' + v.degree + 'deg)'
+                                }).appendTo('.room');
+                            }
+                        });
+                    });
+
+                })
+
+
+            });
+        }else {
+            option();
+        }
+
+        function option() {
+            get('./wxget/openid?code=' + getQueryString("code")).then(function (openid) {
+                sessionStorage.setItem("openid", openid);
+                get('./meetingRoom/getRoomByMeetingId/' + getQueryString('state')).then(function (data) {
+                    $('img').attr('src', data.image);
+                    scale = document.body.clientWidth / getBuildImg().width;
+                    $('.room').css({
+                        "width": document.body.clientWidth + 'px',
+                        "height": getBuildImg().height * scale + 'px',
+                        'background-image': 'url(' + data.image + ')',
+                        'background-size': "100% auto",
+                        'background-repeat': 'no-repeat'
+                    });
+                    //获取座位信息
+                    get('./meetingPlan/getSeatInfoByMeetingId/' + getQueryString("state") + '').then(function (AllUserSeatData) {
+                        post('./meetingPlan/getUserSeat', {
+                            openid: openid,
+                            meetingId: getQueryString('state')
+                        }).then(function (UserSeatData) {
+                            var roomH = $('.room').height();
+                            var roomW = document.body.clientWidth;
+                            $.each(AllUserSeatData, function (i, v) {
+                                if (v.id == UserSeatData.id) {
+                                    $('<div class="seat">').css({
+                                        'left': roomW * v.x,
+                                        'top': roomH * v.y,
+                                        'width': '1.2em',
+                                        'height': '1.2em',
+                                        'background': 'url("./center.png") 100%',
+                                        'background-size': '100% 100%',
+                                        'transform': 'rotate(' + v.degree + 'deg)'
+                                    }).appendTo('.room');
+                                } else {
+                                    $('<div class="seat">').css({
+                                        'left': roomW * v.x,
+                                        'top': roomH * v.y,
+                                        'width': '1.2em',
+                                        'height': '1.2em',
+                                        'background': 'url("./Chair.png") 100%',
+                                        'background-size': '100% 100%',
+                                        'transform': 'rotate(' + v.degree + 'deg)'
+                                    }).appendTo('.room');
+                                }
+                            });
+                        });
+
+                    })
+
+
+                });
+
+
+            })
+        }
+
+
+        function getBuildImg() {
+            var real_width,
+                    real_height,
+                    _im = document.getElementById('preview'),
+                    im = document.createElement('img');
+            im.src = _im.src,
+                    real_width = im.width,
+                    real_height = im.height;
+
+            return {
+                width: real_width,
+                height: real_height
+            };
+        }
+
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<style>
+    .divFrame{text-align: center}
+    textarea{width: 80%;height: 60px}
+</style>
+<script type="text/javascript" src="../jquery-1.4.2.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btn1").click(function () {
+            var contentValue=$("#stateContent").val();
+            var nameValue=$("#stateName").val();
+            if(contentValue==""||nameValue==""){
+                alert("请把信息填写完整");
+                return;
+            }
+            $.ajax({
+                url:"/statement",
+                type:"post",
+                data:JSON.stringify({"name":nameValue,"content":contentValue}),
+                dataType:"json",
+                contentType:"application/json",
+                success: function (data) {
+                    if(data.error==0){
+                        var value=nameValue+"<br/>"+contentValue+"<hr/>"+$("#divTip").html();
+                        $("#divTip").html(value);
+                    }else{
+                        alert("内容包含敏感词汇，评论失败");
+                    }
+                },
+                error: function () {
+                    alert("请求出错，请稍后再试");
+                }
+            });
+        });
+    });
+</script>
+<body>
+    <div id="divTip"></div>
+    <div>
+        发表评论：<br/>
+        <textarea id="stateContent"></textarea><br/>
+        姓名：<input type="text" id="stateName"/><input type="button" value="发表" id="btn1"/>
+    </div>
+</body>
+</html>

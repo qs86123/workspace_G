@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>活动详情</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="panel panel-default">
+    <!--startprint-->&nbsp;
+    <div class="panel-heading font-bold">活动详情</div>
+    <div class="panel-body">
+        <div class="bs-example form-horizontal content">
+            <div class="form-group">
+                <label class="col-lg-2 control-label">活动名称</label>
+                <div class="col-lg-10">
+                    <input type="text" name="name" class="form-control" placeholder="name" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label">活动内容</label>
+                <div class="col-lg-10">
+                    <input type="text" name="content" class="form-control" placeholder="content" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label">活动时间</label>
+                <div class="col-lg-10">
+                    <input size="16" name="start" type="text" value="" readonly class="start_date" readonly>至
+                    <input size="16" name="end" type="text" value="" readonly class="end_date" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label">活动状态</label>
+                <div class="col-lg-10">
+                    <!-- <label class="i-switch m-t-xs m-r">
+                         <input name="status" type="checkbox" >
+                         <i></i>
+                     </label>-->
+                    <select name="status" id="" onchange="search_status(this)" readonly>
+                        <option value="0">正常</option>
+                        <option value="1">冻结</option>
+                        <option value="2">待审核</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label">活动图片</label>
+                <div class="col-lg-10">
+                    <img id="preview" class="" src="" alt="">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10 join_btn">
+                    <!--<button type="button" class="btn btn-sm btn-info" onclick="joinActivity()">参加活动</button>-->
+                </div>
+            </div>
+        </div>
+        <!--endprint-->
+        <ul class="discuss list-group list-group-lg no-radius m-b-none m-t-n-xxs"></ul>
+    </div>
+</div>
+
+
+<script src="jquery/dist/jquery.min.js"></script>
+<script src="xhr.js"></script>
+<script>
+
+    $(function () {
+        getDis();
+        setSession();
+        isJoin();
+
+    });
+    function getDis() {
+        var html = "";
+        get('./activity/findById/' + getQueryString('activityId')).then(function (data) {
+            $('input[name=name]').val(data.activity.name);
+            $('input[name=content]').val(data.activity.content);
+            $('input[name=start]').val(data.activity.startTime);
+            $('input[name=end]').val(data.activity.endTime);
+            data.activity.status == '0' ? $('input[name=status]').attr('checked', 'checked') : '';
+            $('#preview').attr('src', data.activity.image);
+
+            console.log(data);
+
+            $.each(data.comments, function (key, value) {
+                html += '<li class="list-group-item clearfix b-l-3x ng-scope b-l-info">' +
+                        '<a class="avatar thumb pull-left m-r">' +
+                        '<img src="' + value.headImgUrl + '">' +
+                        '</a>' +
+                        '<div class="pull-right text-sm text-muted">' +
+                        '<span class="hidden-xs ng-binding">' + value.time + '</span>' +
+                        '<i class="fa fa-paperclip m-l-sm"></i>' +
+                        '</div>' +
+                        '<div class="clear">' +
+                        '<div><a class="text-md ng-binding">' + value.nikeName + '</a></div>' +
+                        '<div class="text-ellipsis m-t-xs ng-binding">' + value.content + '</div>' +
+                        '</div>' +
+                        '</li>';
+            });
+            $('.discuss').html(html);
+
+            $('.discuss').append('<div class="input-group"> ' +
+                    '<input type="text" class="form-control discuss-input"> ' +
+                    '<span class="input-group-btn"> <button class="btn btn-default" onclick="discuss()" type="button">确定</button>' +
+                    ' </span> </div>')
+
+        });
+    }
+
+    function discuss() {
+        post('./comment/add',{
+            activityId:getQueryString('activityId'),
+            content:$('.discuss-input').val(),
+            nikeName:JSON.parse(sessionStorage.user).nikeName,
+            headImgUrl:JSON.parse(sessionStorage.user).headImgUrl
+        }).then(function (data) {
+            getDis();
+        })
+    }
+
+    function setSession() {
+        if (!sessionStorage.getItem("user")) {
+            get('./wxInfo/getUserInfo?code=' + getQueryString('code')).then(function (user) {
+                sessionStorage.user = JSON.stringify(user);
+            })
+        }
+
+    }
+
+
+    //    console.log(JSON.parse(sessionStorage.user))
+    function isJoin() {
+        post('./activity/isJoin', {
+            activityId: getQueryString('activityId'),
+            openId: JSON.parse(sessionStorage.user).openId
+        }).then(function (respons) {
+            if (respons.isJoin == 1) {
+                $('.join_btn').html('<button type="button" class="btn btn-sm btn-info" onclick="joinActivity()">参加活动</button>')
+            } else {
+                $('.join_btn').html('<button type="button" class="btn btn-sm btn-info" onclick="breakActivity()">退出活动</button>')
+            }
+
+        })
+    }
+
+    function joinActivity() {
+        post('./activity/join', {
+            activityId: getQueryString('activityId'),
+            nikeName: JSON.parse(sessionStorage.user).nikeName,
+            headImgUrl: JSON.parse(sessionStorage.user).headImgUrl,
+            openId: JSON.parse(sessionStorage.user).openId
+        }).then(function (respons) {
+            isJoin();
+            alert('以参加')
+
+        })
+
+    }
+
+    function breakActivity() {
+        get('./wxInfo/getUserInfo?code=' + getQueryString('code')).then(function (user) {
+            post('./activity/quit', {
+                activityId: getQueryString('activityId'),
+                openId: JSON.parse(sessionStorage.user).openId
+            }).then(function (respons) {
+                isJoin();
+                alert('以退出')
+
+            })
+        })
+    }
+
+
+</script>
+</body>
+</html>

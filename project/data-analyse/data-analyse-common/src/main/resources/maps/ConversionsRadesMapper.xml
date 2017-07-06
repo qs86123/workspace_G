@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.changhong.yywl.data.analyse.common.jdbc.mapper.ConversionsRadesMapper">
+	<resultMap id="crTradeMap"
+		type="com.changhong.yywl.data.analyse.common.jdbc.entity.CRResultMap">
+		<result column="cr" property="cr" />
+		<result column="time" property="time" />
+		<result column="sold_cnt" property="soldCnt" />
+		<result column="view_cnt" property="viewCnt" />
+	</resultMap>
+	<resultMap id="goodsMap"
+		type="com.changhong.yywl.data.analyse.common.jdbc.entity.GoodsEntity">
+		<result column="goods_id" property="goodsId" />
+		<result column="goods_name" property="goodsName" />
+	</resultMap>
+
+	<select id="selectTradeCR" parameterType="map" resultMap="crTradeMap">
+		select sum(sold_cnt) sold_cnt,sum(view_cnt) view_cnt,cr,time from
+		rp_trade_cr
+		<where>
+			<if test="category!=null">
+				category=#{category}
+			</if>
+			<if test="userType != null and userType!='' ">
+				and user_type=#{userType}
+			</if>
+			<if test="goodsId!=null">
+				and goods_id=#{goodsId}
+			</if>
+			<if test="startTime!=null">
+				and rp_trade_cr.time &gt;=#{startTime}
+			</if>
+			<if test="endTime!=null">
+				and rp_trade_cr.time &lt;=#{endTime}
+			</if>
+		</where>
+		group by time
+		order by time
+	</select>
+
+	<select id="selectGoodsList" parameterType="map" resultMap="goodsMap">
+		select
+		goods_id,goods_name
+		from rp_trade_cr
+		<where>
+			<if test="category!=null and category!=''">
+				category=#{category}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				and rp_trade_cr.time &gt;=#{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				and rp_trade_cr.time &lt;=#{endTime}
+			</if>
+		</where>
+		group by goods_id
+	</select>
+
+	<!-- other -->
+	<resultMap id="crUserMap"
+		type="com.changhong.yywl.data.analyse.common.jdbc.entity.CRResultMap">
+		<result column="buyer_cnt" property="buyerCnt" />
+		<result column="user_cnt" property="userCnt" />
+		<result column="user_type" property="userType" />
+	</resultMap>
+	<select id="selectBuyerCountCR" resultMap="crUserMap">
+		select
+		user_type,sum(buyer_cnt) buyer_cnt,sum(user_cnt) user_cnt from
+		rp_user_cr
+		where time=(select DATE_ADD(CURRENT_DATE(),INTERVAL -1 day))
+		group by user_type
+	</select>
+</mapper>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>活动列表</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<style>
+    .del-btn {
+        padding: 1px 5px;
+        float: right;
+        background: #000000;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .meet-panel {
+        height: 80px;
+        background: #eee;
+        border-radius: 10px;
+        padding-top: 28px;
+    }
+
+    .panel.layer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+    }
+</style>
+<body>
+<div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading font-bold">
+            活动列表
+        </div>
+        <div class="form-control">
+            <label for="">
+                查询状态：
+                <select name="status" id="" onchange="search_status(this)">
+                    <option value="0">正常</option>
+                    <option value="1">冻结</option>
+                    <option value="2">待审核</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-group has-success has-feedback text-right">
+            <input style="width: 400px;display: inline-block" type="text" class="form-control" name="search">
+            <span class="glyphicon glyphicon-search form-control-feedback" style="pointer-events:auto"
+                  onclick="search()"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row wrapper" id="content">
+            <!-- <div class="col-sm-4" id="addPanel">
+                 <a href="./meeting-adding.html">
+                     <div class="panel text-center wrapper-lg text-2x">
+                         <i class="glyphicon glyphicon-plus"></i>
+                     </div>
+                 </a>
+             </div>-->
+        </div>
+    </div>
+</div>
+<script src="jquery/dist/jquery.min.js"></script>
+<script src="xhr.js"></script>
+<script>
+    var html = "";
+    get('./activity/findAll').then(function (data) {
+        $.each(data, function (i, v) {
+            html += '<div class="col-sm-12">' +
+                    '<div class="panel meet-panel text-center">' +
+                    '<a href="./activity_update.html?activityId=' + v.id + '">' + v.name + '</a><br>' +
+                    '<a href="mobile_activity_detail.html?code='+getQueryString('code')+'&activityId=' + v.id + '">查看活动详情</a>' +
+                    '</div>' +
+                    '</div>'
+        });
+        $('#content').html(html);
+
+
+    });
+
+
+    function search() {
+        post('./activity/findByNameContaining',{name:$('input[name=search]').val()}).then(function (data) {
+            $.each(data, function (i, v) {
+                html += '<div class="col-sm-12">' +
+                        '<div class="panel meet-panel text-center">' +
+                        '<a href="./activity_update.html?activityId=' + v.id + '">' + v.name + '</a><br>' +
+                        '<a href="mobile_activity_detail.html?code='+getQueryString('code')+'&activityId=' + v.id + '">查看活动详情</a>' +
+                        '</div>' +
+                        '</div>'
+            });
+            $('#content').html(html);
+        })
+
+    }
+
+    function search_status(e) {
+        get('./activity/findByStatus/'+$(e).val()).then(function (data) {
+            $.each(data, function (i, v) {
+                html += '<div class="col-sm-12">' +
+                        '<div class="panel meet-panel text-center">' +
+                        '<a href="./activity_update.html?activityId=' + v.id + '">' + v.name + '</a><br>' +
+                        '<a href="mobile_activity_detail.html?code='+getQueryString('code')+'&activityId=' + v.id + '">查看活动详情</a>' +
+                        '</div>' +
+                        '</div>'
+            });
+            $('#content').html(html);
+        })
+    }
+
+/*
+    function del(id) {
+        if (confirm('确定删除？')) {
+            get('./activity/deleteById/' + id + '').then(function (data) {
+                alert('以删除')
+            })
+        }
+    }*/
+</script>
+</body>
+</html>
