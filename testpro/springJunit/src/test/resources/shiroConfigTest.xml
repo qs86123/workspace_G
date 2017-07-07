@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/util
+	 http://www.springframework.org/schema/util/spring-util.xsd">
+	 
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login.jsp" />
+		<property name="filterChainDefinitions">
+			<value>
+				/customer/index = roles[customer]
+				/admin/login = anon
+				/admin/logout = anon
+				/admin/** = authc,roles[superadmin]
+				_jsp/admin/** = authc,roles[superadmin]
+				/wxadmin/** = authc,roles[wxadmin]
+				_jsp/wxadmin/** = authc,roles[wxadmin]
+				/**/logout = logout
+				/ws/* = anon
+				/m/** = anon
+			   /** = anon
+			</value>
+		</property>
+	</bean>
+
+	<bean id="myRealm"
+		class="com.changhong.data.preweixin.wxmgm.controller.AccountShiroRealmTest" />
+		
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="myRealm" />
+		<!--<property name="sessionManager" ref="sessionManager"/> -->
+		<!--<property name="cacheManager" ref="shiroEhcacheManager"/> -->
+	</bean>
+	
+	<!--
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">  
+        <property name="cacheManagerConfigFile" value="classpath:/ehcache-shiro.xml" />  
+    </bean> 
+
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionDAO" ref="redisSessionDao" />
+		<property name="sessionIdCookie" ref="iSession" />
+	</bean> -->
+
+</beans>

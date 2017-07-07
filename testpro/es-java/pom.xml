@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.wt</groupId>
+	<artifactId>es-java</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<!-- 如果依赖不能用的话，直接去es的linux安装包中lib文件夹下拷贝，一共37个，还有一个需要自己添加的delete-by-query在lib文件中提供了 -->
+	<dependencies>
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>2.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.plugin</groupId>
+			<artifactId>delete-by-query</artifactId>
+			<version>2.3.5</version>
+		</dependency>
+	</dependencies>
+</project>
