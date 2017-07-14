@@ -15,7 +15,6 @@ public class DumbDemo {
     public static void main(String[] args) throws SchedulerException {
         SchedulerFactory factory = new StdSchedulerFactory();
         Scheduler scheduler = factory.getScheduler();
-        scheduler.start();
         JobDetail job = JobBuilder.newJob(DumbJob.class).withIdentity("myJob", "jobGroup")
                 .usingJobData("jobSays", "Hello World!")
                 .usingJobData("myFloatValue", 3.141f)
@@ -28,6 +27,7 @@ public class DumbDemo {
                                         .withIntervalInSeconds(10)
                                         .repeatForever())
                 .build();
+        scheduler.start();
         scheduler.scheduleJob(job, trigger);
     }
 }

@@ -2,6 +2,7 @@ package com.wt.quartzdemo.app;
 
 import com.wt.quartzdemo.jobs.SimpleJob;
 import com.wt.quartzdemo.listener.MyJobListener;
+import com.wt.quartzdemo.listener.MySchedulerListener;
 import com.wt.quartzdemo.listener.MyTriggerListener;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -19,6 +20,7 @@ public class ListenerDemo {
         SchedulerFactory factory = new StdSchedulerFactory();
         Scheduler scheduler = factory.getScheduler();
         scheduler.start();
+//        scheduler.getListenerManager().addSchedulerListener(new MySchedulerListener());
         JobDetail job = JobBuilder.newJob(SimpleJob.class).withIdentity("myJob", "jobGroup").build();
         Trigger trigger = getTrigger("myTrigger", "triggerGroup");
         JobDetail job2 = JobBuilder.newJob(SimpleJob.class).withIdentity("myJob2", "jobGroup2").build();
@@ -31,9 +33,10 @@ public class ListenerDemo {
         //所有job监听也可以这样写
 //        scheduler.getListenerManager().addJobListener(new MyJobListener(), EverythingMatcher.allJobs());
 
-        scheduler.getListenerManager().addJobListener(new MyJobListener(), KeyMatcher.keyEquals(new JobKey("myJob", "jobGroup")));
+//        scheduler.getListenerManager().addJobListener(new MyJobListener(), KeyMatcher.keyEquals(new JobKey("myJob", "jobGroup")));
         //触发器监听和job监听类似
-        scheduler.getListenerManager().addTriggerListener(new MyTriggerListener(), KeyMatcher.keyEquals(new TriggerKey("myTrigger2", "triggerGroup2")));
+//        scheduler.getListenerManager().addTriggerListener(new MyTriggerListener(), KeyMatcher.keyEquals(new TriggerKey("myTrigger2", "triggerGroup2")));
+
     }
 
     private static SimpleTrigger getTrigger(String name, String groupName) {
