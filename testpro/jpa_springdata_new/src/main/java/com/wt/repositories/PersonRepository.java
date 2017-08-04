@@ -30,6 +30,9 @@ public interface PersonRepository extends JpaRepository<Person, Serializable> {
 
     List<PersonNoAddresses> findByAge(String age);
 
+    //支持级联属性address.addrName
+    Person findByAddressAddrName(String addrName);
+
 
     //不通
 //    @Query(value = "SELECT * FROM PERSON WHERE NAME = ?1",

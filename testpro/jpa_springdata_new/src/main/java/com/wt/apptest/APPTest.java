@@ -83,6 +83,12 @@ public class APPTest {
         }
     }
 
+    @Test
+    public void findByAddressAddrName() {
+        Person pp = p.findByAddressAddrName("addrNameValue");
+        System.out.println(pp);
+    }
+
 
 //     不通
 //    @Test
