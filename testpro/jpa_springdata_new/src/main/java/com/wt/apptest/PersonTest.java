@@ -1,29 +1,18 @@
 package com.wt.apptest;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.wt.pojo.Person;
-import com.wt.pojo.User;
 import com.wt.repositories.PersonNoAddresses;
 import com.wt.repositories.PersonRepository;
-import com.wt.repositories.UserRepository;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
-public class APPTest {
+public class PersonTest extends SupperTest {
 
-    private ApplicationContext context = null;
     private PersonRepository p = null;
-    private UserRepository u = null;
 
     {
-        context = new ClassPathXmlApplicationContext("classpath:application.xml");
         p = context.getBean(PersonRepository.class);
-        u = context.getBean(UserRepository.class);
     }
 
     /**
@@ -54,14 +43,6 @@ public class APPTest {
     public void findByNameNameQuery() {
         List<Person> ps = p.findByNameNameQuery("wangtao");
         for (Person p : ps) {
-            System.out.println(p);
-        }
-    }
-
-    @Test
-    public void findUserByNameNameQuery() {
-        List<User> ps = u.findByNameNameQuery("wangtao");
-        for (User p : ps) {
             System.out.println(p);
         }
     }
