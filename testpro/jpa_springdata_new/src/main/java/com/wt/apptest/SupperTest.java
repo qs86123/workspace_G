@@ -5,6 +5,8 @@ import com.wt.repositories.UserRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.List;
+
 /**
  * @Description
  * @Author: wangtao
@@ -16,6 +18,12 @@ public abstract class SupperTest {
 
     {
         context = new ClassPathXmlApplicationContext("classpath:application.xml");
+    }
+
+    protected void show(List<?> list) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(0));
+        }
     }
 
 }

@@ -31,20 +31,20 @@
         <property name="packagesToScan" value="com.wt.pojo"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="true"/>
-                <property name="generateDdl" value="true"/>
-                <!-- 自动生成表,不推荐 -->
-                <property name="database" value="MYSQL"/>
+                <!--<property name="showSql" value="true"/>-->
+                <!--<property name="generateDdl" value="true"/>-->
+                <!--自动生成表,不推荐 -->
+                <!--<property name="database" value="MYSQL"/>-->
             </bean>
         </property>
         <!-- 配置 JPA 的基本属性. 例如 JPA 实现产品的属性,这种配置跟jpaVendorAdapter属性里面配置的内部bean属性差不多 -->
-        <!-- <property name="jpaProperties"> -->
-        <!-- <props> -->
-        <!-- <prop key="hibernate.show_sql">true</prop> -->
-        <!-- <prop key="hibernate.format_sql">true</prop> -->
-        <!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
-        <!-- </props> -->
-        <!-- </property> -->
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
     </bean>
     <!--事务管理 -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
