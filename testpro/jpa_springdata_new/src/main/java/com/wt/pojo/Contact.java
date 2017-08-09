@@ -24,6 +24,7 @@ public class Contact extends AbstractMappedType {
     @Column(name = "phone_type_string")
     private PhoneType phoneTypeString;
 
+    //使用@conver注解就不要再使用@Enumerated注解了
     @Convert(converter = GenderConverter.class)
     @Column(name = "gender_ordinal")
     private Gender genderOrdinal;
