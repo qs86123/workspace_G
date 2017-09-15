@@ -2,6 +2,8 @@ package com.wt.repositories;
 
 import com.wt.pojo.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -23,6 +25,26 @@ public interface PersonRepository extends JpaRepository<Person, Serializable> {
 
     @Transactional
     List<Person> removeByName(String lastname);
+
+    //如果是@Query写的更新和删除语句，必须加@Modifying注解
+    @Transactional
+    @Modifying
+    @Query("delete from Person p where p.name=?1")
+    void deleteByNameQueryAnnotation(String name);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Person p where p.name in (?1)")
+    void deleteByNameIn(List<String> names);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Person p where p.name in (?1)")
+    void deleteByNameIn2(String[] names);
+
+    //如果使用jpa的方法解析的话，执行删除都是先查询，将查询到的数据通过id逐个删除，效率上来讲自己的写的语句效率高
+    @Transactional
+    void deleteByNameIn(String[] names);
 
     List<Person> findByNameNameQuery(String name);
 

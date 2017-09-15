@@ -5,6 +5,7 @@ import com.wt.repositories.PersonNoAddresses;
 import com.wt.repositories.PersonRepository;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class PersonTest extends SupperTest {
@@ -37,6 +38,36 @@ public class PersonTest extends SupperTest {
         for (Person p : ps) {
             System.out.println(p);
         }
+    }
+
+    @Test
+    public void deleteByNameQueryAnnontation() {
+        for (int i = 0; i < 3; i++)
+            p.save(new Person("aaa", "23", "男"));
+        p.deleteByNameQueryAnnotation("aaa");
+        //////////////////
+        p.save(new Person("a", "23", "男"));
+        p.save(new Person("b", "23", "男"));
+        p.save(new Person("c", "23", "男"));
+        p.save(new Person("a", "23", "男"));
+        p.save(new Person("b", "23", "男"));
+        p.save(new Person("c", "23", "男"));
+        p.deleteByNameIn(Arrays.asList("a", "b", "c"));
+        //////////////////////////////
+        p.save(new Person("a", "23", "男"));
+        p.save(new Person("b", "23", "男"));
+        p.save(new Person("c", "23", "男"));
+        p.save(new Person("a", "23", "男"));
+        p.save(new Person("b", "23", "男"));
+        p.save(new Person("c", "23", "男"));
+        p.deleteByNameIn2(new String[]{"a", "b", "c"});
+        p.save(new Person("a", "23", "男"));
+        p.save(new Person("b", "23", "男"));
+        p.save(new Person("c", "23", "男"));
+        p.save(new Person("a", "23", "男"));
+        p.save(new Person("b", "23", "男"));
+        p.save(new Person("c", "23", "男"));
+        p.deleteByNameIn(new String[]{"a", "b", "c"});
     }
 
     @Test
