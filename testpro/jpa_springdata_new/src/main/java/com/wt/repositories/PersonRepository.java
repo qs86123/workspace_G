@@ -50,7 +50,11 @@ public interface PersonRepository extends JpaRepository<Person, Serializable> {
 
     Person findById(String id);
 
+    List<Person> findNameDistinctNameByAge(String age);
+
     List<PersonNoAddresses> findByAge(String age);
+
+//    List<PersonNoAddresses> findDistinctNameByAge(String age);
 
     //支持级联属性address.addrName
     Person findByAddressAddrName(String addrName);

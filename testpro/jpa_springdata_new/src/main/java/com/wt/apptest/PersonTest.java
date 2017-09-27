@@ -96,6 +96,15 @@ public class PersonTest extends SupperTest {
     }
 
     @Test
+    public void findDistinctNameByAge() {
+        List<Person> nas = p.findNameDistinctNameByAge("23");
+        for (Person na : nas) {
+            System.out.println(na.getName() + ":" + na.getAge());
+            System.out.println(na.getSex());
+        }
+    }
+
+    @Test
     public void findByAddressAddrName() {
         Person pp = p.findByAddressAddrName("addrNameValue");
         System.out.println(pp);
