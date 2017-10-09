@@ -10,7 +10,10 @@ import org.quartz.JobListener;
  * @Date:16:40 2017/7/12
  * @Email:tao8.wang@changhong.com
  */
-public class MyJobListener implements JobListener{
+public class MyJobListener implements JobListener {
+
+    private String name;
+
     @Override
     public String getName() {
         return "aaa";
@@ -28,6 +31,10 @@ public class MyJobListener implements JobListener{
 
     @Override
     public void jobWasExecuted(JobExecutionContext jobExecutionContext, JobExecutionException e) {
-        System.out.println("jobWasExecuted");
+        System.out.println(this.name+" jobWasExecuted");
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
