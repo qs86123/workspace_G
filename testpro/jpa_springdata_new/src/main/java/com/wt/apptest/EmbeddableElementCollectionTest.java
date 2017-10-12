@@ -30,4 +30,11 @@ public class EmbeddableElementCollectionTest extends SupperTest {
         pr.save(p);
     }
 
+    @Test
+    public void find() {
+        List<Patch> all = pr.findAll();
+        show(all);
+    }
+
+
 }

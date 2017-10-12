@@ -16,7 +16,7 @@ public class Patch extends AbstractMappedType {
 
     private String name;
 
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     //指定从表的表名patch_change,外键列名patch_id
     @CollectionTable(
             name = "patch_change",
@@ -26,7 +26,7 @@ public class Patch extends AbstractMappedType {
     @OrderColumn(name = "index_id")
     private List<Change> changes = new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(
             name = "patch_phone",
             joinColumns = @JoinColumn(name = "phone_id")
@@ -57,5 +57,14 @@ public class Patch extends AbstractMappedType {
 
     public void setPhoneIds(List<String> phoneIds) {
         this.phoneIds = phoneIds;
+    }
+
+    @Override
+    public String toString() {
+        return "Patch{" +
+                "name='" + name + '\'' +
+                ", changes=" + changes +
+                ", phoneIds=" + phoneIds +
+                '}';
     }
 }

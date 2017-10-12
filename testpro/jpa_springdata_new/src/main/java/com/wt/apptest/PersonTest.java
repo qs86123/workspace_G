@@ -4,6 +4,8 @@ import com.wt.pojo.Person;
 import com.wt.repositories.PersonNoAddresses;
 import com.wt.repositories.PersonRepository;
 import org.junit.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -112,12 +114,12 @@ public class PersonTest extends SupperTest {
 
 
 //     不通
-//    @Test
-//    public void findByNameNativeQuery() {
-//        Page<Person> page = p.findByNameNativeQuery("wangtao", new PageRequest(0, 3));
-//        List<Person> ps = page.getContent();
-//        for (Person p : ps) {
-//            System.out.println(p);
-//        }
-//    }
+    @Test
+    public void findByNameNativeQuery() {
+        Page<Person> page = p.findByName("wangtao", new PageRequest(0, 3));
+        List<Person> ps = page.getContent();
+        for (Person p : ps) {
+            System.out.println(p);
+        }
+    }
 }

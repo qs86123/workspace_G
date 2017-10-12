@@ -1,6 +1,8 @@
 package com.wt.repositories;
 
 import com.wt.pojo.Person;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -61,10 +63,10 @@ public interface PersonRepository extends JpaRepository<Person, Serializable> {
 
 
     //不通
-//    @Query(value = "SELECT * FROM PERSON WHERE NAME = ?1",
-//            countQuery = "SELECT count(*) FROM PERSON WHERE NAME = ?1",
-//            nativeQuery = true)
-//    Page<Person> findByNameNativeQuery(String lastname, Pageable pageable);
+    @Query(value = "SELECT * FROM PERSON WHERE NAME = ?1",
+            countQuery = "SELECT count(*) FROM PERSON WHERE NAME = ?1",
+            nativeQuery = true)
+    Page<Person> findByName(String name, Pageable pageable);
 
 
 }

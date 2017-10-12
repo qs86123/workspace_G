@@ -46,4 +46,11 @@ public class Change {
         this.diff = diff;
     }
 
+    @Override
+    public String toString() {
+        return "Change{" +
+                "path='" + path + '\'' +
+                ", diff='" + diff + '\'' +
+                '}';
+    }
 }

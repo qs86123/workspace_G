@@ -2,6 +2,7 @@ package com.wt.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -12,7 +13,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "join_formula_country")
-public class JoinFormulaCountry extends AbstractMappedType {
+public class JoinFormulaCountry {
+
+    @Id
+    private String id;
+
     private String name;
 
     @Column(name = "is_default")
@@ -43,5 +48,13 @@ public class JoinFormulaCountry extends AbstractMappedType {
 
     public void setPrimaryLanguage(String primaryLanguage) {
         this.primaryLanguage = primaryLanguage;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
