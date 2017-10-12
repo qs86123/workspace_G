@@ -63,10 +63,10 @@ public interface PersonRepository extends JpaRepository<Person, Serializable> {
 
 
     //不通
-    @Query(value = "SELECT * FROM PERSON WHERE NAME = ?1",
-            countQuery = "SELECT count(*) FROM PERSON WHERE NAME = ?1",
-            nativeQuery = true)
-    Page<Person> findByName(String name, Pageable pageable);
+//    @Query(value = "SELECT * FROM PERSON WHERE NAME = ?1",
+//            countQuery = "SELECT count(*) FROM PERSON WHERE NAME = ?1",
+//            nativeQuery = true)
+//    Page<Person> findByName(String name, Pageable pageable);
 
 
 }

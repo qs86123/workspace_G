@@ -114,12 +114,12 @@ public class PersonTest extends SupperTest {
 
 
 //     不通
-    @Test
-    public void findByNameNativeQuery() {
-        Page<Person> page = p.findByName("wangtao", new PageRequest(0, 3));
-        List<Person> ps = page.getContent();
-        for (Person p : ps) {
-            System.out.println(p);
-        }
-    }
+//    @Test
+//    public void findByNameNativeQuery() {
+//        Page<Person> page = p.findByName("wangtao", new PageRequest(0, 3));
+//        List<Person> ps = page.getContent();
+//        for (Person p : ps) {
+//            System.out.println(p);
+//        }
+//    }
 }
