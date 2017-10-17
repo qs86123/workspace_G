@@ -27,6 +27,14 @@ public class OptimisticLockingPersonTest extends SupperTest {
     }
 
     @Test
+    public void updateTypeAll() {
+        OptimisticLockingPerson p = new OptimisticLockingPerson();
+        p.setId("1");
+        p.setName("wt");
+        opr.save(p);
+    }
+
+    @Test
     public void update() {
         OptimisticLockingPerson p = new OptimisticLockingPerson();
         p.setId("1");
@@ -42,16 +50,16 @@ public class OptimisticLockingPersonTest extends SupperTest {
     @Test
     public void updateDirty1() {
         //只改createTime，看输出语句where部分
-        OptimisticLockingPerson p = opr.findOne("1");
+        OptimisticLockingPerson p = new OptimisticLockingPerson();
+        p.setId("1");
         p.setCreateTime(new Date());
         opr.save(p);
     }
 
     @Test
     public void updateDirty2() {
-        //该createTime和country，看输出语句where部分
+        //只修改createTime，看输出语句where部分
         OptimisticLockingPerson p = opr.findOne("1");
-        p.setCountry("country" + new Random().nextInt(100));
         p.setCreateTime(new Date());
         opr.save(p);
     }

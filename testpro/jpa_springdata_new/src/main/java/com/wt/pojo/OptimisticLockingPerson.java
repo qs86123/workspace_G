@@ -1,11 +1,10 @@
 package com.wt.pojo;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
-import org.hibernate.annotations.SelectBeforeUpdate;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -22,7 +21,7 @@ import java.util.Date;
 //NONE：不执行乐观锁，即使有@Version注解也直接忽略掉
 //VERSION:默认值，只对@Version注解标记的字段执行乐观锁锁定
 //DIRTY：基于脏字段执行乐观锁锁定，修改的那些字段，就将那些字段作为乐观锁锁定
-@OptimisticLocking(type = OptimisticLockType.DIRTY)
+@OptimisticLocking(type = OptimisticLockType.ALL)
 //@DynamicUpdate注解需要使用，因为ALL和DIRTY在更新的时候需要考虑所有的字段属性
 @DynamicUpdate
 //@SelectBeforeUpdate注解是DIRTY时使用，更新之前查询，实际测试不加也会在更新之前查询，可以从更新的时候看到会输出两条select语句，
@@ -34,6 +33,7 @@ public class OptimisticLockingPerson extends AbstractMappedType {
 
     private String name;
 
+    @OptimisticLock(excluded = true)
     private String country;
 
     @Column(name = "create_time")
