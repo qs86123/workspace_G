@@ -36,16 +36,8 @@ public class Base64Utils {
     }
 
     public static void toOutputStream(String file, OutputStream os) {
-        file = file.substring(file.indexOf(",") + 1);
         try {
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] bytes = decoder.decodeBuffer(file);
-            for (int i = 0; i < bytes.length; ++i) {
-                if (bytes[i] < 0) {// 调整异常数据
-                    bytes[i] += 256;
-                }
-            }
-            InputStream in = new ByteArrayInputStream(bytes);
+            InputStream in = decode(file);
             inputStreamToOutputStream(in, os);
         } catch (Exception e) {
             e.printStackTrace();
