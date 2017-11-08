@@ -13,16 +13,13 @@ import clive.hua.app.simpleImageTool.common.WriteParameter;
 import clive.hua.app.simpleImageTool.exception.MyImageException;
 import clive.hua.app.simpleImageTool.gif.GifUtil;
 import clive.hua.app.simpleImageTool.util.ImageUtils;
+import com.alibaba.simpleimage.io.*;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
@@ -297,6 +294,15 @@ public class SimpleImageTool {
         ImageWrapper imageWrapper = new ImageWrapper(newImage);
         ImageWriteHelper.write(imageWrapper, os, ImageFormat.getImageFormat(suffix), this.writeParam);
         os.close();
+    }
+
+    public InputStream toInputstream(String format) throws IOException, MyImageException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageWrapper imageWrapper = new ImageWrapper(this.toBufferedImage());
+        ImageWriteHelper.write(imageWrapper, os, ImageFormat.getImageFormat(format), this.writeParam);
+        InputStream is = new ByteArrayInputStream(os.toByteArray());
+        os.close();
+        return is;
     }
 
     private static String getSuffix(File file) {
