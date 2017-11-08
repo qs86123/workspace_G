@@ -30,8 +30,8 @@ public class SimpleImageToolTest {
 
     @Before
     public void before() {
-//        simpleImageTool = SimpleImageTool.of("D:/111.jpg");
-        simpleImageTool = SimpleImageTool.of("D:/water.png");
+        simpleImageTool = SimpleImageTool.of("D:/111.jpg");
+//        simpleImageTool = SimpleImageTool.of("D:/water.png");
     }
 
     @Test
@@ -66,7 +66,7 @@ public class SimpleImageToolTest {
 
     @Test
     public void height600Gray() throws MyImageException {
-        simpleImageTool.height(600).gray(true).toFile(new File("D:height600gray.jpg"));
+        simpleImageTool.height(600).gray(true).toFile(new File("D:height600gray1.jpg"));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class SimpleImageToolTest {
 
     @Test
     public void sizeRotate() throws MyImageException {
-        simpleImageTool.size(600, 600).scale(0.5).toFile(new File("D:size600x600scale.jpg"));
+        simpleImageTool.size(600, 600).scale(0.5).toFile(new File("D:size600x600scale2.jpg"));
     }
 
     @Test
@@ -120,7 +120,10 @@ public class SimpleImageToolTest {
                 .rotate(20f)
                 .color(Color.blue)
                 .opacity(0.8f);
-        simpleImageTool.size(600, 600).watermark(watermark).waterMarkerMin(100, 100).watermark(watermark2).watermark(watermark3).toFile(new File("D:图片水印.jpg"));
+        simpleImageTool.height(600)
+                .lockScale(true).watermark(watermark)
+                .waterMarkerMin(100, 100).watermark(watermark2).watermark(watermark3)
+                .toFile(new File("D:图片水印.jpg"));
     }
 
     @Test
@@ -143,6 +146,19 @@ public class SimpleImageToolTest {
     @Test
     public void testToInputStream() throws MyImageException, IOException {
         InputStream is = SimpleImageTool.of("D:111.jpg").height(600).gray(true).toInputstream("JPG");
+        FileOutputStream fos = new FileOutputStream("D:test1111.jpg");
+        byte[] b = new byte[4096];
+        int len = -1;
+        while ((len = is.read(b)) != -1) {
+            fos.write(b, 0, len);
+        }
+        fos.flush();
+    }
+
+    @Test
+    public void base64Test() throws Exception {
+        String encode = Base64Utils.encode(new FileInputStream("D:111.jpg"));
+        InputStream is = SimpleImageTool.of(Base64Utils.decode(encode)).height(600).gray(true).toInputstream("JPG");
         FileOutputStream fos = new FileOutputStream("D:test1111.jpg");
         byte[] b = new byte[4096];
         int len = -1;
