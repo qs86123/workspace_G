@@ -1,7 +1,5 @@
 package com.myself.edu.qgdyxx;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.LoggerFactory;
@@ -17,15 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description
+ * @Description https://182.140.197.53/vpn/user/auth/password
  * @Author: wangtao
- * @Date:9:38 2017/11/7
+ * @Date:15:57 2017/11/6
  * @Email:tao8.wang@changhong.com
  */
-public class DangyuanInfo2 {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(DangyuanInfo2.class);
+public class SessionInvalid {
 
-    public static String dangyuanInfo2(String cookie, boolean isContact, String fileNAme, int page) {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SessionInvalid.class);
+
+    public static String sessionInvalid(String cookie) {
         //设置基本信息
         MyQuickCrawlUtil.INS.setRequestMethod("POST")
                 .addExtraHeader("Accept", "application/json, text/javascript, */*; q=0.01")
@@ -38,32 +37,12 @@ public class DangyuanInfo2 {
                 .addExtraHeader("X-Requested-With", "XMLHttpRequest")
                 .addExtraHeader("Cookie", cookie);
 
-        final String url = "https://182.140.197.53/64a0a160/dirMemberJsonEdit.action";
-        List<NameValuePair> list = new ArrayList<NameValuePair>();
-        list.add(new BasicNameValuePair("isSQR", "0"));
-        list.add(new BasicNameValuePair("isParent", "false"));
-        list.add(new BasicNameValuePair("partyOrganCode", "50B7984F4DB84C00AFC0D6A6A0847DDC"));
-        list.add(new BasicNameValuePair("organCode", "e118d5ce351842eb9ed1a6fe5e995ad4"));
-        list.add(new BasicNameValuePair("containSub", "1"));
-        list.add(new BasicNameValuePair("schemaName", "SC_MY_MY_FK"));
-        list.add(new BasicNameValuePair("keyWord", ""));
-        list.add(new BasicNameValuePair("idCard", ""));
-        list.add(new BasicNameValuePair("dylb", ""));
-        //查询停止党籍的时候dyzt置为4，有一条数据
-        list.add(new BasicNameValuePair("dyzt", ""));
-        list.add(new BasicNameValuePair("order", ""));
-        list.add(new BasicNameValuePair("page.currentPage", page + ""));
-        list.add(new BasicNameValuePair("page.pageSize", "500"));
-        if (isContact)
-            list.add(new BasicNameValuePair("iscontact", "1"));
-        //添加请求参数
+        List<NameValuePair> list = new ArrayList<>();
+        final String checkUsrId = "https://182.140.197.53/64a0a160/isSessionInvalid.action";
         MyQuickCrawlUtil.INS.addPostParam(list);
-        System.out.println("开始获取第< " + page + " >页数据");
-        String content = MyQuickCrawlUtil.INS.dangyuanInfo2(url, null, null, fileNAme);
-        System.out.println("第< " + page + " >页数据获取完成");
-        //完成请求发送，并记录返回信息
-
+        String content = MyQuickCrawlUtil.INS.updateDyxxInfo(checkUsrId, null, null);
         MyQuickCrawlUtil.INS.clearPostParam();
+
         list.clear();
         return content;
     }
@@ -94,4 +73,5 @@ public class DangyuanInfo2 {
         sc.init(null, new TrustManager[]{trustManager}, null);
         return sc;
     }
+
 }

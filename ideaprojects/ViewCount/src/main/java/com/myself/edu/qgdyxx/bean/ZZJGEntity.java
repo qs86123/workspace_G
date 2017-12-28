@@ -1,5 +1,7 @@
 package com.myself.edu.qgdyxx.bean;
 
+import java.lang.reflect.Field;
+
 /**
  * @Description
  * @Author: wangtao
@@ -132,5 +134,42 @@ public class ZZJGEntity {
                 ", icon='" + icon + '\'' +
                 ", orderNum='" + orderNum + '\'' +
                 '}';
+    }
+
+    public String toSql(String tableName) {
+        StringBuilder sb = new StringBuilder();
+        StringBuilder sbValue = new StringBuilder();
+        sb.append("INSERT INTO " + tableName + " (");
+        Field[] fs = this.getClass().getDeclaredFields();
+        for (int i = 0; i < fs.length; i++) {
+            fs[i].setAccessible(true);
+            String dbName = getDbName(fs[i].getName());
+            sb.append("`" + dbName + "`,");
+            Object value = null;
+            try {
+                value = fs[i].get(this);
+            } catch (IllegalAccessException e) {
+                ;
+            }
+            sbValue.append(value == null ? "null," : "'" + value + "',");
+        }
+        String str1 = sb.toString();
+        str1 = str1.substring(0, str1.length() - 1) + ") values(";
+        String str2 = sbValue.toString();
+        str2 = str2.substring(0, str2.length() - 1) + ")";
+        return str1 + str2;
+    }
+
+    private String getDbName(String name) {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = name.toCharArray();
+        for (char c : chars) {
+            if (c >= 'A' && c <= 'Z') {
+                sb.append(("_" + c).toLowerCase());
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

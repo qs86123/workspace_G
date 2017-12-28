@@ -10,16 +10,19 @@ public class ParseTest {
     public static void main1(String[] args) throws InterruptedException {
         AbstractParse parse = new ZTreeParse("D:zuzhijigou.txt");
         parse.doParse();
-        Thread.sleep(3000);
-        parse = new DangyaunInfoParse("D:失联dangyuanInfo.txt");
-        parse.doParse();
-        Thread.sleep(3000);
-        parse.setFile("D:dangyuanInfo.txt");
-        parse.doParse();
+//        Thread.sleep(3000);
+//        parse = new DangyaunInfoParse("D:失联dangyuanInfo.txt");
+//        parse.doParse();
+//        Thread.sleep(3000);
+//        parse.setFile("D:dangyuanInfo.txt");
+//        parse.doParse();
     }
 
     public static void main(String[] args) {
-        String file = "D:dangyuanInfo2_";
+//        String file = "D:dangyuanInfo2_";
+        //失联党员的数据和上面的数据全部重复，不执行
+//        String file = "D:dangyuanInfonotconnect2_";
+        String file = "D:dyzt_";
         AbstractParse parse = new DangyaunInfoParse();
         int count = 0;
         for (int i = 1; i < 10; i++) {

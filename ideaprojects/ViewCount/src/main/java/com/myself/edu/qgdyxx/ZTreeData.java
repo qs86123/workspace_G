@@ -35,7 +35,7 @@ public class ZTreeData {
                 .addExtraHeader("Cache-Control", "no-cache")
                 .addExtraHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
                 .addExtraHeader("X-Requested-With", "XMLHttpRequest")
-                .addExtraHeader("Cookie",cookie);
+                .addExtraHeader("Cookie", cookie);
 
         final String url = "https://182.140.197.53/64a0a160/organTree.action";
         List<NameValuePair> list = new ArrayList<NameValuePair>();
@@ -43,7 +43,7 @@ public class ZTreeData {
         list.add(new BasicNameValuePair("orgCode", orgCode));
         //添加请求参数
         MyQuickCrawlUtil.INS.addPostParam(list);
-        String jsessionid = MyQuickCrawlUtil.INS.zTreeData(url, null, null);
+        String jsessionid = MyQuickCrawlUtil.INS.zTreeData(url, null, null, "D:zuzhijigou.txt");
         System.out.println(jsessionid);
         //完成请求发送，并记录返回信息
 

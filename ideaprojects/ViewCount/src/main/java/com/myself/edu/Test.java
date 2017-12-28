@@ -18,5 +18,7 @@ public class Test {
             System.out.println("null");
         }else
             System.out.println("not null");
+        A a=new B();
+        B b= (B) a;
     }
 }

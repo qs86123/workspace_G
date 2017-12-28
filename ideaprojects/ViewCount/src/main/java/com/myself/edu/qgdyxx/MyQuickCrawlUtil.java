@@ -264,7 +264,7 @@ public enum MyQuickCrawlUtil {
                 }
                 HttpEntity en = httpres.getEntity();
                 String content = EntityUtils.toString(en, "utf-8");
-                System.out.println("aaaaaaaa" + content);
+                System.out.println("loginWebContent:" + content);
                 return cookie;
             }
         } catch (Exception e) {
@@ -273,7 +273,7 @@ public enum MyQuickCrawlUtil {
         return "";
     }
 
-    public String zTreeData(String url, String host, Integer port) {
+    public String zTreeData(String url, String host, Integer port,String fileName) {
         try {
             if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
                 builder.setProxy(new HttpHost(host, port));
@@ -308,7 +308,7 @@ public enum MyQuickCrawlUtil {
                     System.out.println(cookie);
                 }
                 HttpEntity en = httpres.getEntity();
-                toFile(en.getContent(), "D:zuzhijigou.txt");
+                toFile(en.getContent(), fileName);
 //                String content = EntityUtils.toString(en, "utf-8");
 //                System.out.println("aaaaaaaa" + content);
                 return cookie;
@@ -407,8 +407,72 @@ public enum MyQuickCrawlUtil {
             }
         } catch (Exception e) {
             Logger.INS.error("{}", e);
+            AppStart.page--;
         }
         return "";
+    }
+
+    public String updateDyxxInfo(String url, String host, Integer port) {
+        try {
+            if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
+                builder.setProxy(new HttpHost(host, port));
+            }
+
+            //采用绕过验证的方式处理https请求
+            SSLContext sslcontext = VpnLogin.createIgnoreVerifySSL();
+
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            CloseableHttpClient httpClient =
+                    HttpClients.custom().setSSLSocketFactory(sslsf)
+                            .setDefaultRequestConfig(builder.build()).build();
+            HttpUriRequest httpRequest = getRequest(url);
+            CloseableHttpResponse httpres = httpClient.execute(httpRequest);
+
+            Header[] cookies = httpres.getHeaders("Set-Cookie");
+            int code = httpres.getStatusLine().getStatusCode();
+            Logger.INS.debug("code is :{}", code);
+            if (200 == code) {
+                HttpEntity en = httpres.getEntity();
+                String content = EntityUtils.toString(en, "utf-8");
+                return content;
+            }
+            HttpEntity en = httpres.getEntity();
+            String content = EntityUtils.toString(en, "utf-8");
+            return content;
+        } catch (Exception e) {
+            Logger.INS.error("{}", e);
+        }
+        return "fail";
+    }
+
+    public String getBasicInfoMini(String url, String host, Integer port) {
+        try {
+            if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
+                builder.setProxy(new HttpHost(host, port));
+            }
+
+            //采用绕过验证的方式处理https请求
+            SSLContext sslcontext = VpnLogin.createIgnoreVerifySSL();
+
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            CloseableHttpClient httpClient =
+                    HttpClients.custom().setSSLSocketFactory(sslsf)
+                            .setDefaultRequestConfig(builder.build()).build();
+            HttpUriRequest httpRequest = getRequest(url);
+            CloseableHttpResponse httpres = httpClient.execute(httpRequest);
+
+            Header[] cookies = httpres.getHeaders("Set-Cookie");
+            int code = httpres.getStatusLine().getStatusCode();
+            Logger.INS.debug("code is :{}", code);
+            if (200 == code) {
+                HttpEntity en = httpres.getEntity();
+                String content = EntityUtils.toString(en, "utf-8");
+                return content;
+            }
+        } catch (Exception e) {
+            Logger.INS.error("{}", e);
+        }
+        return null;
     }
 
     private HttpUriRequest getRequest(String url) {
