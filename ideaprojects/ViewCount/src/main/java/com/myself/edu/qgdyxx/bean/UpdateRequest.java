@@ -155,7 +155,7 @@ public class UpdateRequest {
         list.add(new BasicNameValuePair("dyInfo.zjhm", dyInfo_zjhm));
         list.add(new BasicNameValuePair("dyInfo.csrq", dyInfo_csrq));
         list.add(new BasicNameValuePair("dyInfo.xl", dyInfo_xl));
-        list.add(new BasicNameValuePair("dyInfo.dylb", dyInfo_dylb));
+        list.add(new BasicNameValuePair("dyInfo.dylb", "3"));
         list.add(new BasicNameValuePair("dyInfo.gzgw", dyInfo_gzgw));
         list.add(new BasicNameValuePair("dyInfo.lxdh", dyInfo_lxdh));
         list.add(new BasicNameValuePair("dyInfo.qh", dyInfo_qh));
@@ -221,8 +221,16 @@ public class UpdateRequest {
         return dyInfo_mz;
     }
 
-    public void setDyInfo_mz(String dyInfo_mz) {
-        this.dyInfo_mz = dyInfo_mz.substring(0, 2);
+    public void setDyInfo_mz(String dyInfo_mz) throws Exception {
+        if (dyInfo_mz.equals("汉族")) {
+            this.dyInfo_mz = "01";
+        } else if (dyInfo_mz.equals("羌族")) {
+            this.dyInfo_mz = "33";
+        } else if (dyInfo_mz.equals("土家族")) {
+            this.dyInfo_mz = "15";
+        } else
+            throw new Exception("名族有误");
+
     }
 
     public String getDyInfo_zjhm() {
@@ -245,8 +253,25 @@ public class UpdateRequest {
         return dyInfo_xl;
     }
 
-    public void setDyInfo_xl(String dyInfo_xl) {
-        this.dyInfo_xl = dyInfo_xl.substring(0, 2).trim();
+    public void setDyInfo_xl(String dyInfo_xl) throws Exception {
+        if (dyInfo_xl.equals("大学"))
+            this.dyInfo_xl = "21";
+        else if (dyInfo_xl.equals("大专"))
+            this.dyInfo_xl = "22";
+        else if (dyInfo_xl.equals("研究生"))
+            this.dyInfo_xl = "12";
+        else if (dyInfo_xl.equals("高中"))
+            this.dyInfo_xl = "6";
+        else if (dyInfo_xl.equals("中专"))
+            this.dyInfo_xl = "41";
+        else if (dyInfo_xl.equals("中技"))
+            this.dyInfo_xl = "47";
+        else if (dyInfo_xl.equals("大专"))
+            this.dyInfo_xl = "2D";
+        else if (dyInfo_xl.equals("初中"))
+            this.dyInfo_xl = "7";
+        else
+            throw new Exception("学历有误");
     }
 
     public String getDyInfo_dylb() {

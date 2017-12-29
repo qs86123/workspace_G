@@ -23,9 +23,9 @@ public class AddBasicInfoStart {
 
     public static void main(String[] args) throws Exception {
         //正式党员信息录入
-//        zhengshi();
+        zhengshi();
         //预备党员信息录入
-        yubei();
+//        yubei();
     }
 
     /**
@@ -42,7 +42,7 @@ public class AddBasicInfoStart {
 //        cookieAll = "mapid=64a0a160;JSESSIONID=CFEC1D758628D88B26E1FA91FD8EC5F3.csdj1;SRV=3533ff4c-eb4e-47be-bef7-17ec40ca86cb;VSG_SESSIONID=172271669;";
         System.out.println(cookieAll);
         String zhengshiSql = "select c.id organid,a.* from update_base_info a " +
-                "left join zzjg_base_info c on c.`name`= a.party_name and a.idcard='511681198811073000'";
+                "left join zzjg_base_info c on c.`name`= a.party_name";
         int pageSize = 100;
         Connection conn = MysqlUtils.getConnection("127.0.0.1", "3306", "qgdyxx", "root", "123456");
         String sql = "insert into update_record (`uuid`,`organid`,`name`,`idcard`) values(";
@@ -52,6 +52,9 @@ public class AddBasicInfoStart {
         UpdateRequest ur = null;
         List<NameValuePair> list = new ArrayList<>();
         while (rs.next()) {
+            //数据库中的数据都是不准确的，这些参数是不能直接用的，
+            //用一个实体去接收这些参数，在这个实体中，set方法会将数据修正
+            //比如将yyyy年MM月dd日转换成yyyy-MM-dd的格式，性别男会改成1，女会改成2，详细看set方法
             ur = new UpdateRequest();
             String name = rs.getString("name");
             ur.setDyInfo_xm(name);
@@ -75,6 +78,7 @@ public class AddBasicInfoStart {
             ur.setDyInfo_sfzld(rs.getString("is_flow"));
             ur.setDyInfo_wclx(rs.getString("flow_direction"));
             //基本信息初始化完成
+            //开始写死其他表单数据
             String organid = rs.getString("organid");
             list.add(new BasicNameValuePair("dyDjxx.uuid", ""));
             list.add(new BasicNameValuePair("changeDate", ""));
@@ -108,7 +112,7 @@ public class AddBasicInfoStart {
             list.add(new BasicNameValuePair("addReason", "13"));
             list.add(new BasicNameValuePair("isSqrToDyAfterSave", ""));
             list.add(new BasicNameValuePair("beginEditFlag", "1"));
-
+            //写死部分的表单数据添加完之后，添加基本信息表单
             list.addAll(ur.getNameValuePairListForAddZhengshi());
 
             String isContact = ur.getDyInfo_iscontact();
@@ -120,7 +124,7 @@ public class AddBasicInfoStart {
                 String result = AddBasicInfo.addBasicInfo(cookieAll, list);
                 JSONObject j = JSONObject.parseObject(result);
                 if (j.getString("result").equals("0")) {
-                    PreparedStatement p = conn.prepareStatement(sql + "'" + json.getString("dyInfo.userid") + "'," + "'" + json.getString("dyInfo.organid") + "'," + "'" + name + "'," + "'" + idcard + "')");
+                    PreparedStatement p = conn.prepareStatement(sql + "'" + "" + "'," + "'" + organid + "'," + "'" + name + "'," + "'" + idcard + "')");
                     p.executeUpdate();
                 } else {
                     //当添加成功时往数据库记录一条信息
@@ -145,8 +149,8 @@ public class AddBasicInfoStart {
         cookieAll = webcookie + cookie;
 //        cookieAll = "mapid=64a0a160;JSESSIONID=3643943EF3A59BBDA54685C93100A0CD.csdj1;SRV=079b6108-1995-4124-80bc-4cd63796deba;VSG_SESSIONID=1725844928;";
         System.out.println(cookieAll);
-        String yubeiSql = "select c.id organid,a.* from update_base_info a " +
-                "left join zzjg_base_info c on c.`name`= a.party_name where a.idcard='422201198912016000'";
+        String yubeiSql = "select c.id organid,a.* from update_base_info a left join zzjg_base_info c on c.`name`= a.party_name where a.idcard in \n" +
+                "('510681199201254851','511126197908155929','50011319851122915X','510222197905278623','510821197506103419','43080219730228241X','510727198507243517','510781198108300834')";
         int pageSize = 100;
         Connection conn = MysqlUtils.getConnection("127.0.0.1", "3306", "qgdyxx", "root", "123456");
         String sql = "insert into update_record (`uuid`,`organid`,`name`,`idcard`) values(";
@@ -209,7 +213,7 @@ public class AddBasicInfoStart {
                 JSONObject j = JSONObject.parseObject(result);
                 if (j.getString("result").equals("0")) {
                     //当添加成功时往数据库记录一条信息
-                    PreparedStatement p = conn.prepareStatement(sql + "'" + json.getString("dyInfo.userid") + "'," + "'" + json.getString("dyInfo.organid") + "'," + "'" + name + "'," + "'" + idcard + "')");
+                    PreparedStatement p = conn.prepareStatement(sql + "'" + "userId"+ "'," + "'" + organid + "'," + "'" + name + "'," + "'" + idcard + "')");
                     p.executeUpdate();
                 } else {
                     System.out.println("<" + idcard + ">:" + "补录信息失败：" + result);
