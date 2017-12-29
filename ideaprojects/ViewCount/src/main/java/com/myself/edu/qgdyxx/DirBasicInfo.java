@@ -15,26 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description
+ * @Description https://182.140.197.53/vpn/user/auth/password
  * @Author: wangtao
  * @Date:15:57 2017/11/6
  * @Email:tao8.wang@changhong.com
  */
-public class UpdateCheckUserId {
+public class DirBasicInfo {
 
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(UpdateCheckUserId.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(DirBasicInfo.class);
 
-    /**
-     * 检查用户信息是否正确,检查身份证是否有误，是否已存在，返回结果result为0时正常
-     *
-     * @param cookie
-     * @param zjhm
-     * @param iscontact
-     * @return
-     */
-    public static String updateCheckUserId(String cookie, String zjhm, String iscontact) {
+    public static String getBasicInfoMini(String cookie, String uuid, String organid) {
         //设置基本信息
-        MyQuickCrawlUtil.INS.setRequestMethod("POST")
+        MyQuickCrawlUtil.INS.setRequestMethod("GET")
                 .addExtraHeader("Accept", "application/json, text/javascript, */*; q=0.01")
                 .addExtraHeader("Accept-Encoding", "gzip, deflate")
                 .addExtraHeader("Accept-Language", "zh-CN,zh;q=0.8")
@@ -45,16 +37,13 @@ public class UpdateCheckUserId {
                 .addExtraHeader("X-Requested-With", "XMLHttpRequest")
                 .addExtraHeader("Cookie", cookie);
 
-        List<NameValuePair> list = new ArrayList<>();
-        final String checkUsrId = "https://182.140.197.53/64a0a160/checkUserID.action";
-        list.add(new BasicNameValuePair("zjhm", zjhm));
-        //补录的时候dyid为空
-        list.add(new BasicNameValuePair("dyid", ""));
-        list.add(new BasicNameValuePair("iscontact", iscontact));
-        MyQuickCrawlUtil.INS.addPostParam(list);
-        String content = MyQuickCrawlUtil.INS.updateDyxxInfo(checkUsrId, null, null);
+        final String url = "https://182.140.197.53/64a0a160/dirBasicInfo.action";
+        //添加请求参数
+        //添加时请求回来一个基本信息的页面，
+        String content = MyQuickCrawlUtil.INS.getBasicInfoMini(url, null, null);
+        //完成请求发送，并记录返回信息
+
         MyQuickCrawlUtil.INS.clearPostParam();
-        list.clear();
         return content;
     }
 

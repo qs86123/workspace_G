@@ -186,6 +186,29 @@ public enum MyQuickCrawlUtil {
         return "";
     }
 
+    public String dirBasicInfo(String url, String host, Integer port) {
+        try {
+            if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
+                builder.setProxy(new HttpHost(host, port));
+            }
+            CloseableHttpClient httpClient =
+                    HttpClients.custom().setDefaultRequestConfig(builder.build()).build();
+            HttpUriRequest httpRequest = getRequest(url);
+            CloseableHttpResponse httpres = httpClient.execute(httpRequest);
+            Header[] cookies = httpres.getHeaders("Set-Cookie");
+            int code = httpres.getStatusLine().getStatusCode();
+            Logger.INS.debug("code is :{}", code);
+            if (200 == code) {
+                HttpEntity en = httpres.getEntity();
+                String content = EntityUtils.toString(en, "utf-8");
+                return content;
+            }
+        } catch (Exception e) {
+            Logger.INS.error("{}", e);
+        }
+        return "";
+    }
+
     public String loginvpn(String url, String host, Integer port) {
         try {
             if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
@@ -273,7 +296,7 @@ public enum MyQuickCrawlUtil {
         return "";
     }
 
-    public String zTreeData(String url, String host, Integer port,String fileName) {
+    public String zTreeData(String url, String host, Integer port, String fileName) {
         try {
             if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
                 builder.setProxy(new HttpHost(host, port));
@@ -413,6 +436,38 @@ public enum MyQuickCrawlUtil {
     }
 
     public String updateDyxxInfo(String url, String host, Integer port) {
+        try {
+            if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
+                builder.setProxy(new HttpHost(host, port));
+            }
+
+            //采用绕过验证的方式处理https请求
+            SSLContext sslcontext = VpnLogin.createIgnoreVerifySSL();
+
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            CloseableHttpClient httpClient =
+                    HttpClients.custom().setSSLSocketFactory(sslsf)
+                            .setDefaultRequestConfig(builder.build()).build();
+            HttpUriRequest httpRequest = getRequest(url);
+            CloseableHttpResponse httpres = httpClient.execute(httpRequest);
+
+            Header[] cookies = httpres.getHeaders("Set-Cookie");
+            int code = httpres.getStatusLine().getStatusCode();
+            Logger.INS.debug("code is :{}", code);
+            if (200 == code) {
+                HttpEntity en = httpres.getEntity();
+                String content = EntityUtils.toString(en, "utf-8");
+                return content;
+            }
+            HttpEntity en = httpres.getEntity();
+            String content = EntityUtils.toString(en, "utf-8");
+            return content;
+        } catch (Exception e) {
+            Logger.INS.error("{}", e);
+        }
+        return "fail";
+    }
+    public String addBasicInfo(String url, String host, Integer port) {
         try {
             if (StringUtils.isNotBlank(host) && port != null && port > 0 && port < 65536) {
                 builder.setProxy(new HttpHost(host, port));

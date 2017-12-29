@@ -24,6 +24,7 @@ public class ZtreeChildDataStart {
         String webcookie = WebLogin.loginweb(cookie);
         System.out.println("----------zTree---start");
 
+//        String cookies="mapid=64a0a160;JSESSIONID=B732C4E6D28D75C838D1C8ADB0E1E901.csdj1;SRV=079b6108-1995-4124-80bc-4cd63796deba;";
         File file = new File("D:zuzhijigou.txt");
         JSONArray ja = JSONArray.parseArray(readFile(file));
         int i = 0;
@@ -31,9 +32,9 @@ public class ZtreeChildDataStart {
         List<String> sqls = new ArrayList<>();
         for (i = 0; i < ja.size(); i++) {
             JSONObject j = ja.getJSONObject(i);
-            if (j.getString("is_parent").equals("true")) {
+            if (j.getString("isParent").equals("true")) {
                 orgCode = j.getString("id");
-                ZTreeChildData.zTree(webcookie + cookie, orgCode, "D:childztree_" + i + ".txt");
+                ZTreeChildData.zTree(webcookie+cookie, orgCode, "D:childztree_" + i + ".txt");
             }
         }
     }

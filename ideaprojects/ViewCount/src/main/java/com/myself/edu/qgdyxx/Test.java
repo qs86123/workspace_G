@@ -9,6 +9,8 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,7 +43,7 @@ public class Test {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main2(String[] args) throws Exception {
         Connection conn = MysqlUtils.getConnection("127.0.0.1", "3306", "qgdyxx", "root", "123456");
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -65,5 +67,12 @@ public class Test {
         }
         System.out.println(i);
 
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String y = URLEncoder.encode("王涛");
+        System.out.println(y.replace("%","%25"));
+        boolean equals = y.equals("%25E6%259D%25A8%25E7%258E%2589%25E6%2588%2590".replace("%25", "%"));
+        System.out.println(equals);
     }
 }

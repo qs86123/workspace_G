@@ -13,20 +13,22 @@ public class AppStart {
     public static int page = 1;
 
     public static void main(String[] args) {
-//        System.out.println("----------login---VPN");
-//        String cookie = VpnLogin.loginvpn();
-//        System.out.println("----------login---WEB");
-//        String webcookie = WebLogin.loginweb(cookie);
-//        System.out.println("----------zTree---start");
-//        ZTreeData.zTree(webcookie + cookie);
+        System.out.println("----------login---VPN");
+        String cookie = VpnLogin.loginvpn();
+        System.out.println("----------login---WEB");
+        String webcookie = WebLogin.loginweb(cookie);
+        System.out.println("----------zTree---start");
+//        ZTreeData.zTree(webcookie + cookie,"D:zuzhijigou.txt");
+        //多媒体组织机构树
+        ZTreeData.zTree(webcookie + cookie,"D:DMTzuzhijigou.txt");
         //一次性获取所有党员信息
 //        System.out.println("----------入库党员信息---start");
 //        DangyuanInfo.dangyuanInfo(webcookie + cookie,false,"D:dangyuanInfo.txt");
 //        System.out.println("----------失联党员信息---start");
 //        DangyuanInfo.dangyuanInfo(webcookie + cookie, true,"D:失联dangyuanInfo.txt");
 
-        String webcookie="VSG_SESSIONID=1029600735; mapid=64a0a160; SRV=257abe1e-1fa3-4afb-80ae-ab34a4b462fe; JSESSIONID=8108B7F508C8022975B01CBF73E43A78.csdj1";
-//        String cookie="";
+        String allcookie="mapid=64a0a160; JSESSIONID=197F5656AB0807AC7BB04E68774B8097.csdj1; SRV=257abe1e-1fa3-4afb-80ae-ab34a4b462fe";
+
         //党员信息太多，分页获取
         //入库党员信息
 //        pushDangyuanInfoWithPage(webcookie, cookie, "dangyuanInfo2", false);

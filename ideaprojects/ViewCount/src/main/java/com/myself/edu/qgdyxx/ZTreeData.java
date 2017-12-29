@@ -24,7 +24,7 @@ public class ZTreeData {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ZTreeData.class);
 
-    public static void zTree(String cookie) {
+    public static void zTree(String cookie,String fileName) {
         //设置基本信息
         MyQuickCrawlUtil.INS.setRequestMethod("POST")
                 .addExtraHeader("Accept", "application/json, text/javascript, */*; q=0.01")
@@ -39,11 +39,14 @@ public class ZTreeData {
 
         final String url = "https://182.140.197.53/64a0a160/organTree.action";
         List<NameValuePair> list = new ArrayList<NameValuePair>();
-        String orgCode = "50B7984F4DB84C00AFC0D6A6A0847DDC";
+        //组织树根
+//        String orgCode = "50B7984F4DB84C00AFC0D6A6A0847DDC";
+        //多媒体委员会
+        String orgCode = "03E3D618247644E2A14C7E31E5E018E1";
         list.add(new BasicNameValuePair("orgCode", orgCode));
         //添加请求参数
         MyQuickCrawlUtil.INS.addPostParam(list);
-        String jsessionid = MyQuickCrawlUtil.INS.zTreeData(url, null, null, "D:zuzhijigou.txt");
+        String jsessionid = MyQuickCrawlUtil.INS.zTreeData(url, null, null, fileName);
         System.out.println(jsessionid);
         //完成请求发送，并记录返回信息
 
