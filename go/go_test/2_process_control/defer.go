@@ -4,6 +4,7 @@ import "fmt"
 
 func main() {
 	//defer会延迟函数的执行，直到上层函数返回,defer的上层函数就是使用了defer的那个函数，
+	//通俗点讲：就是defer会在调用defer的函数返回之后再执行
 	//这里main使用了defer，所以defer会在main返回之后执行
 	//deferStack也使用了defer,deferStack里面的defer的上层函数就是deferStack,defer会在deferStack返回之后执行
 	//所以结果可以看到：在程序输出“done”之后，开始执行deferStack里面的defer，在main函数输出i=9999之后，函数f()才执行
