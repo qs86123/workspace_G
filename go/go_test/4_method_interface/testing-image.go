@@ -23,6 +23,6 @@ func (img Image) At(x, y int) color.Color {
 }
 
 func main() {
-	m := Image{}
+	m := Image{40,40}
 	pic.ShowImage(m)
 }

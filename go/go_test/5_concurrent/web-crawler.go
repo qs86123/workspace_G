@@ -1,5 +1,8 @@
 package main
 
+import "net/http"
+
 func main() {
-	//TODO
+	http.HandleFunc("lll",http.Handler())
+	http.ListenAndServe(":9090", mux)
 }

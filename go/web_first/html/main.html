@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>main</title>
+</head>
+<script src="../template/js/jquery-1.4.2.js"></script>
+<script src="../template/js/main.js"></script>
+<link rel="stylesheet" type="text/css" href="../template/css/main.css">
+<body>
+<h1>this is main page</h1>
+<br/>
+<h3>表单提交：</h3>
+<br/>
+<form action="/login" method="post">
+    用户名:<input type="text" name="username">
+    密码:<input type="password" name="password">
+    <input type="submit" value="登陆">
+</form>
+<br/>
+<h3>上传文件：</h3>
+<br/>
+<form enctype="multipart/form-data" action="/upload" method="post">
+    <input type="file" name="uploadfile"/>
+    <input type="hidden" name="token" value="{{.}}"/>
+    <input type="submit" value="upload"/>
+</form>
+<br/>
+<h3>js静态文件函数测试：</h3>
+<input type="button" value="js静态函数测试" onclick="aaa()">
+<br>
+<h3>ajax请求返回数据：</h3>
+<input type="button" value="ajax请求返回数据" onclick="ajaxData()">
+<br>
+<h3>http包上传文件测试：</h3>
+<input type="button" value="http上传文件测试" onclick="httpUpload()">
+<br>
+<h3>静态文件img测试：</h3>
+<br/>
+<img src="../template/img/111.png">
+<br/>
+<h3>html页面跳转测试（看似相对路径跳转的，实际上是要走接口的，go的接口处理了这个跳转）：</h3>
+<br/>
+<a href="list/news.html">list/news.html</a>
+<a href="bbb.html">./bb.html</a>
+<a href="login.html">./main.html</a>
+<br/>
+</body>
+</html>
