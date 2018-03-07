@@ -9,6 +9,5 @@ type MainController struct {
 }
 
 func (c *MainController) Get() {
-	c.TplExt="html"
-	c.TplName = "index.html"
+	c.TplName = "index.tpl"
 }
